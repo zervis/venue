@@ -1,0 +1,14 @@
+<%= if @current_user do %>
+
+<%= link "Add place", to: Routes.places_path(@conn, :new)  %>
+<br>
+
+<%= for place <- @places do %>
+
+
+<%= place.title %>
+
+<%= trunc(Geocalc.distance_between(place.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
+
+<% end %>
+<% end %>

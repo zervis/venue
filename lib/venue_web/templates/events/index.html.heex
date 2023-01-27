@@ -1,0 +1,20 @@
+<%= if @current_user do %>
+
+<%= link "Add event", to: Routes.events_path(@conn, :new)  %>
+<br>
+
+<%= for event <- @events do %>
+
+
+<%= event.title %><br>
+<%= Timex.from_now(event.date) %><br>
+
+<%= Timex.day_name(Timex.weekday(event.date)) %>, <%= Timex.month_name(event.date.month) %> <%= event.date.month %><br>
+
+<%= event.date %><br>
+
+
+<%= trunc(Geocalc.distance_between(event.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km away <br><br>
+
+<% end %>
+<% end %>
