@@ -80,8 +80,11 @@ defmodule VenueWeb.Router do
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
     resources "/users", UsersController
-    resources "/events", EventsController
+    #resources "/events", EventsController
     post "/events/new", EventsController, :add_event
+    resources "/events", EventsController do
+      resources "/comments", CommentController, only: [:create]
+    end
     resources "/groups", GroupsController
     post "/groups/new", GroupsController, :add_group
     resources "/places", PlacesController

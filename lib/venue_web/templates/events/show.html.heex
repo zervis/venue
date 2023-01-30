@@ -1,0 +1,37 @@
+<h1>title: <%= @event.title %></h1>
+
+<h3>Add a Comment</h3>
+<%= form_for @comment_changeset, Routes.events_comment_path(@conn, :create, @event), fn form -> %>
+
+  <%= label form, "Author" %>
+  <%= select form, :user_id, Enum.map(@users, &{&1.email, &1.id}) %>
+  <%= error_tag form, :user %>
+
+  <%= label form, :message %>
+  <%= textarea form, :message %>
+  <%= error_tag form, :message %>
+
+  <div>
+    <%= submit "Save"%>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Comment Author</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for comment <- @event.comments do %>
+    <tr>
+      <td><%= comment.user.email %></td>
+      <td><%= comment.message %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= link "Edit", to: Routes.events_path(@conn, :edit, @event) %></span>
+<span><%= link "Back", to: Routes.events_path(@conn, :index) %></span>

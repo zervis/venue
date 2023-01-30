@@ -32,4 +32,18 @@ defmodule Venue.EventsFixtures do
 
     event
   end
+
+  @doc """
+  Generate a comment.
+  """
+  def comment_fixture(attrs \\ %{}) do
+    {:ok, comment} =
+      attrs
+      |> Enum.into(%{
+        message: "some message"
+      })
+      |> Venue.Events.create_comment()
+
+    comment
+  end
 end

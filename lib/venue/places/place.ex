@@ -6,7 +6,7 @@ defmodule Venue.Places.Place do
     field :title, :string
     field :geom, Geo.PostGIS.Geometry
     field :city, :string
-
+    belongs_to :user, Venue.Users.User
     timestamps()
   end
 

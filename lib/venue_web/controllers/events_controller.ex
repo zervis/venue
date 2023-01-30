@@ -3,10 +3,21 @@ defmodule VenueWeb.EventsController do
 
   alias Venue.Events
   alias Venue.Events.Event
+  alias Venue.Events.Comment
+  alias Venue.Users
 
   def index(conn, _params) do
     events = Events.list_events(conn)
     render(conn, "index.html", events: events)
+  end
+
+
+  def show(conn, %{"id" => id}) do
+    event = Events.get_event!(id)
+    users = Users.list_users(conn)
+    comment_changeset = Events.change_comment(%Comment{})
+    render(conn, "show.html", event: event, users: users,
+                              comment_changeset: comment_changeset)
   end
 
   def new(conn, _params) do
