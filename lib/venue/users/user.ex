@@ -7,6 +7,8 @@ defmodule Venue.Users.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :city, :string
+    field :desc, :string
+    field :birth, :date
     field :lat, :float
     field :long, :float
     field :distance, :integer, default: 25
@@ -35,7 +37,7 @@ defmodule Venue.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :city, :distance])
+    |> cast(attrs, [:email, :password, :city, :birth, :desc, :distance])
     |> validate_email()
     |> validate_password(opts)
   end
@@ -52,7 +54,7 @@ defmodule Venue.Users.User do
   defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
-    |> validate_length(:password, min: 12, max: 72)
+    |> validate_length(:password, min: 8, max: 72)
     # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
@@ -87,6 +89,12 @@ defmodule Venue.Users.User do
       %{changes: %{email: _}} = changeset -> changeset
       %{} = changeset -> add_error(changeset, :email, "did not change")
     end
+  end
+
+  def settings_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:city, :desc, :distance, :geom, :lat, :long])
+    |> validate_required([:city, :desc, :distance, :geom])
   end
 
   @doc """

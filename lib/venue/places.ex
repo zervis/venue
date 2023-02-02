@@ -116,14 +116,15 @@ defmodule Venue.Places do
   def add_place(current_user, place_params) do
     %{"city" => city} = place_params
     %{"title" => title} = place_params
- 
+    %{"desc" => desc} = place_params
+
 
     {:ok, coordinates } = Geocoder.call(city)
     lat = coordinates.lat
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Place{:city => city, :geom => geom, :title => title}
+    %Place{:city => city, :geom => geom, :title => title, :desc => desc, :user_id => current_user.id}
       |> Repo.insert()
   end
 

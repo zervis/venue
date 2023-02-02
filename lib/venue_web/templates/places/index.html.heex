@@ -5,9 +5,11 @@
 
 <%= for place <- @places do %>
 
-
+<%= link to: Routes.places_path(@conn, :show, place.id) do %>
 <%= place.title %>
+<% end %>
 
+<%= place.desc %>
 <%= trunc(Geocalc.distance_between(place.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
 
 <% end %>

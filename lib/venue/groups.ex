@@ -117,14 +117,15 @@ defmodule Venue.Groups do
   def add_group(current_user, group_params) do
     %{"city" => city} = group_params
     %{"title" => title} = group_params
- 
+    %{"desc" => desc} = group_params
+
 
     {:ok, coordinates } = Geocoder.call(city)
     lat = coordinates.lat
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Group{:city => city, :geom => geom, :title => title}
+    %Group{:city => city, :geom => geom, :title => title, :desc => desc, :user_id => current_user.id}
       |> Repo.insert()
   end
 

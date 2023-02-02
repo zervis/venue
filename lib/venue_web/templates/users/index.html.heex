@@ -1,8 +1,12 @@
 <%= if @current_user do %>
 <%= for user <- @users do %>
 
-
+<%= link to: Routes.users_path(@conn, :show, user.id) do %>
 <%= user.email %>
+<% end %>
+
+<%= user.birth %>
+<%= user.desc %>
 
 <%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
 

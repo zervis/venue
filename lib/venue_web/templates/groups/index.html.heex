@@ -4,7 +4,10 @@
 <%= for group <- @groups do %>
 
 
+<%= link to: Routes.groups_path(@conn, :show, group.id) do %>
 <%= group.title %>
+<% end %>
+<%= group.desc %>
 
 <%= trunc(Geocalc.distance_between(group.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
 

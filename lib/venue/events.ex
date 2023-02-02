@@ -8,6 +8,7 @@ defmodule Venue.Events do
   alias Venue.Repo
 
   alias Venue.Events.Event
+  alias Venue.Events.Comment
 
   @doc """
   Returns the list of events.
@@ -48,12 +49,14 @@ defmodule Venue.Events do
 
   """
   def get_event!(id) do
-    Event
-    |> Repo.get!(id)
-    |> Repo.preload([:user, comments: [:user]])
 
+    query = from(p in Event, where: p.id == ^id, select: p,
+      preload: [:user, comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
+    )
 
-  end
+  Repo.one!(query)
+end
+
   @doc """
   Creates a event.
 
@@ -124,6 +127,7 @@ defmodule Venue.Events do
     %{"date" => date} = event_params
     %{"hour" => hour} = event_params
     %{"title" => title} = event_params
+    %{"desc" => desc} = event_params
 
     date_with_time = date <> " " <> hour <> ":00"
 
@@ -135,7 +139,7 @@ defmodule Venue.Events do
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Event{:city => city, :geom => geom, :title => title, :date => naive_date}
+    %Event{:city => city, :geom => geom, :title => title, :date => naive_date, :desc => desc, :user_id => current_user.id}
       |> Repo.insert()
   end
 
@@ -183,10 +187,12 @@ defmodule Venue.Events do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(%Event{} = event, attrs \\ %{}) do
+  def create_comment(%Event{} = event, current_user, attrs \\ %{}) do
+    %{"message" => message} = attrs
+
     event
     |> Ecto.build_assoc(:comments)
-    |> Comment.changeset(attrs)
+    |> Comment.changeset(%{message: message, user_id: current_user.id})
     |> Repo.insert()
   end
 

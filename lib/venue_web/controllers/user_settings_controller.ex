@@ -10,6 +10,26 @@ defmodule VenueWeb.UserSettingsController do
     render(conn, "edit.html")
   end
 
+
+  def update(conn, %{"action" => "update_settings"} = params) do
+    %{"user" => user_params} = params
+    user = conn.assigns.current_user
+    IO.inspect(user_params)
+    case Users.apply_user_settings(user, user_params) do
+      {:ok, applied_user} ->
+        conn
+        |> put_flash(
+          :info,
+          "Settings updated."
+        )
+        |> redirect(to: Routes.user_settings_path(conn, :edit))
+
+      {:error, changeset} ->
+        render(conn, "edit.html", settings_changeset: changeset)
+    end
+  end
+
+
   def update(conn, %{"action" => "update_email"} = params) do
     %{"current_password" => password, "user" => user_params} = params
     user = conn.assigns.current_user
@@ -68,6 +88,7 @@ defmodule VenueWeb.UserSettingsController do
     user = conn.assigns.current_user
 
     conn
+    |> assign(:settings_changeset, Users.change_user_settings(user))
     |> assign(:email_changeset, Users.change_user_email(user))
     |> assign(:password_changeset, Users.change_user_password(user))
   end

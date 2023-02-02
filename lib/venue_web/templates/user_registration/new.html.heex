@@ -15,6 +15,14 @@
   <%= password_input f, :password, required: true %>
   <%= error_tag f, :password %>
 
+  <%= label f, :birth %>
+  <%= date_input f, :birth, required: true %>
+  <%= error_tag f, :birth %>
+
+  <%= label f, :about %>
+  <%= textarea f, :desc, required: true %>
+  <%= error_tag f, :desc %>
+
   <%= label f, :city %>
   <%= text_input f, :city, placeholder: "City name or postal code", required: true %>
   <%= error_tag f, :city %>

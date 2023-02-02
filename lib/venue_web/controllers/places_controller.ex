@@ -1,9 +1,10 @@
 defmodule VenueWeb.PlacesController do
   use VenueWeb, :controller
 
+  alias Venue.Users
   alias Venue.Places
   alias Venue.Places.Place
-  
+
   def index(conn, _params) do
     places = Places.list_places(conn)
     render(conn, "index.html", places: places)
@@ -13,6 +14,15 @@ defmodule VenueWeb.PlacesController do
 		changeset = Places.change_place(%Place{})
 		render(conn, "new.html", changeset: changeset)
 	end
+
+  def show(conn, %{"id" => id}) do
+    place = Places.get_place!(id)
+    users = Users.list_users(conn)
+   # comment_changeset = Groups.change_comment(%Comment{})
+    render(conn, "show.html", place: place, users: users
+    #, comment_changeset: comment_changeset
+    )
+  end
 
   def add_place(conn, %{"place" => place_params}) do
     current_user = conn.assigns.current_user

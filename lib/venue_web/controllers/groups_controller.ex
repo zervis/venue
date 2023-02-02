@@ -1,9 +1,10 @@
 defmodule VenueWeb.GroupsController do
   use VenueWeb, :controller
 
+  alias Venue.Users
   alias Venue.Groups
   alias Venue.Groups.Group
-  
+
   def index(conn, _params) do
     groups = Groups.list_groups(conn)
     render(conn, "index.html", groups: groups)
@@ -13,6 +14,15 @@ defmodule VenueWeb.GroupsController do
 		changeset = Groups.change_group(%Group{})
 		render(conn, "new.html", changeset: changeset)
 	end
+
+  def show(conn, %{"id" => id}) do
+    group = Groups.get_group!(id)
+    users = Users.list_users(conn)
+   # comment_changeset = Groups.change_comment(%Comment{})
+    render(conn, "show.html", group: group, users: users
+    #, comment_changeset: comment_changeset
+    )
+  end
 
   def add_group(conn, %{"group" => group_params}) do
     current_user = conn.assigns.current_user

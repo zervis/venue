@@ -76,7 +76,7 @@ defmodule Venue.Users do
       ** (Ecto.NoResultsError)
 
   """
-  
+
   def get_user!(id), do: Repo.get!(User, id)
 
   ## User registration
@@ -156,6 +156,21 @@ defmodule Venue.Users do
     |> Ecto.Changeset.apply_action(:update)
   end
 
+  def apply_user_settings(user, attrs) do
+    %{"city" => city} = attrs
+    %{"desc" => desc} = attrs
+    %{"distance" => distance} = attrs
+
+    {:ok, coordinates } = Geocoder.call(city)
+    lat = coordinates.lat
+    long = coordinates.lon
+    geom = %Geo.Point{coordinates: {lat, long}}
+
+    user
+    |> User.settings_changeset(%{city: city, geom: geom, lat: lat, long: long, desc: desc, distance: distance})
+    |> Repo.update()
+  end
+
   @doc """
   Updates the user email using the given token.
 
@@ -213,6 +228,10 @@ defmodule Venue.Users do
   """
   def change_user_password(user, attrs \\ %{}) do
     User.password_changeset(user, attrs, hash_password: false)
+  end
+
+  def change_user_settings(user, attrs \\ %{}) do
+    User.settings_changeset(user, attrs)
   end
 
   @doc """

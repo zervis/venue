@@ -5,8 +5,13 @@
 
 <%= for event <- @events do %>
 
+<%= link to: Routes.events_path(@conn, :show, event.id) do %>
+<%= event.title %>
+<% end %>
 
-<%= event.id %> <%= event.title %><br>
+<br>
+<%= event.desc %>
+<br>
 <%= Timex.from_now(event.date) %><br>
 
 <%= Timex.day_name(Timex.weekday(event.date)) %>, <%= event.date.day %> <%= Timex.month_name(event.date.month) %> <%= event.date.hour %>:<%= event.date.minute %><br>

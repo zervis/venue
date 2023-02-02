@@ -7,9 +7,10 @@ defmodule VenueWeb.CommentController do
   def create(conn, %{"events_id" => event_id, "comment" => comment_params}) do
     # define the post we are nested within
     event = Events.get_event!(event_id)
+    current_user = conn.assigns.current_user
 
     # create our new comment and handle (success or failure)
-    case Events.create_comment(event, comment_params) do
+    case Events.create_comment(event, current_user, comment_params) do
       {:ok, _comment} ->
         conn
         |> put_flash(:info, "Comment created")
