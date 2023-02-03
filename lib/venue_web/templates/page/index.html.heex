@@ -1,10 +1,6 @@
 <%= if @current_user do %>
-<%= for user <- @users do %>
-
-
-<%= user.email %>
-
-<%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
-
-<% end %>
+my events
+my friends
+my groups
+my places
 <% end %>

@@ -3,7 +3,6 @@ defmodule VenueWeb.UsersController do
 
   alias Venue.Users
   alias VenueWeb.UserAuth
-  alias Venue.Events
 
   def index(conn, _params) do
     users = Users.list_users(conn)
@@ -12,10 +11,7 @@ defmodule VenueWeb.UsersController do
 
   def show(conn, %{"id" => id}) do
     user = Users.get_user!(id)
-   # comment_changeset = Groups.change_comment(%Comment{})
-    render(conn, "show.html", user: user
-    #, comment_changeset: comment_changeset
-    )
+    render(conn, "show.html", user: user)
   end
 
   def delete(conn, _params) do

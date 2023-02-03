@@ -7,8 +7,8 @@
 
 <%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, signed: true) %>
 
-<%= # Date.diff(Date.utc_today(), user.birth) %>
-<%= user.birth %>
+<% days = Date.diff(Date.utc_today(), user.birth) %>
+<%= trunc(days / 365) %> y/o
 <%= user.desc %>
 
 <%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>

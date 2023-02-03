@@ -79,8 +79,9 @@ defmodule VenueWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
-    resources "/users", UsersController
-    #resources "/events", EventsController
+    resources "/users", UsersController do
+      resources "/comments", UsersCommentController, only: [:create]
+    end
     post "/events/new", EventsController, :add_event
     resources "/events", EventsController do
       resources "/comments", CommentController, only: [:create]

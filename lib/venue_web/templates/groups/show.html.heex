@@ -1,2 +1,31 @@
 <h1>title: <%= @group.title %></h1>
 <h1>desc: <%= @group.desc %></h1>
+
+<h3>Add a Comment</h3>
+<%= form_for @comment_changeset, Routes.groups_groups_comment_path(@conn, :create, @group), fn form -> %>
+
+  <%= label form, :message %>
+  <%= textarea form, :message %>
+  <%= error_tag form, :message %>
+
+  <div>
+    <%= submit "Save"%>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Comment Author</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for comment <- @group.groups_comments do %>
+    <tr>
+      <td><%= comment.user.email %></td>
+      <td><%= comment.message %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -409,4 +409,9 @@ defmodule Venue.Users do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  
 end
+
+
+
