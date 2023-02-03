@@ -1,5 +1,24 @@
 <h1>Settings</h1>
 
+<%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :thumb, signed: true) %>
+
+<.form let={f} for={@avatar_changeset} action={Routes.user_settings_path(@conn, :update)}  multipart={true} id="update_avatar">
+  <%= if @avatar_changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+  <%= hidden_input f, :action, name: "action", value: "update_avatar" %>
+
+  <%= label f, :avatar %>
+  <%= file_input f, :avatar %>
+  <%= error_tag f, :avatar %>
+
+  <div>
+    <%= submit "Change avatar" %>
+  </div>
+</.form>
+
 <h3>Change settings</h3>
 
 <.form let={f} for={@settings_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_settings">
@@ -9,6 +28,7 @@
     </div>
   <% end %>
   <%= hidden_input f, :action, name: "action", value: "update_settings" %>
+
   <%= label f, :about %>
   <%= textarea f, :desc, required: true %>
   <%= error_tag f, :desc %>

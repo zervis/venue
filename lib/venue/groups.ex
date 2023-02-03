@@ -8,6 +8,7 @@ defmodule Venue.Groups do
   alias Venue.Repo
 
   alias Venue.Groups.Group
+  alias Venue.Groups.Comment
 
   @doc """
   Returns the list of groups.
@@ -128,5 +129,5 @@ defmodule Venue.Groups do
     %Group{:city => city, :geom => geom, :title => title, :desc => desc, :user_id => current_user.id}
       |> Repo.insert()
   end
-
+  
 end

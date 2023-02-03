@@ -1,5 +1,6 @@
 defmodule Venue.Users.User do
   use Ecto.Schema
+  use Waffle.Ecto.Schema
   import Ecto.Changeset
 
   schema "users" do
@@ -8,6 +9,7 @@ defmodule Venue.Users.User do
     field :hashed_password, :string, redact: true
     field :city, :string
     field :desc, :string
+    field :avatar, Venue.Avatar.Type
     field :birth, :date
     field :lat, :float
     field :long, :float
@@ -95,6 +97,12 @@ defmodule Venue.Users.User do
     user
     |> cast(attrs, [:city, :desc, :distance, :geom, :lat, :long])
     |> validate_required([:city, :desc, :distance, :geom])
+  end
+
+  def avatar_changeset(user, attrs) do
+    user
+    |> cast_attachments(attrs, [:avatar])
+    |> validate_required([:avatar])
   end
 
   @doc """

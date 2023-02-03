@@ -144,7 +144,7 @@ end
   end
 
 
-  alias Venue.Events.Comment
+ 
 
   @doc """
   Returns the list of comments.

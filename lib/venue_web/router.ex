@@ -85,10 +85,16 @@ defmodule VenueWeb.Router do
     resources "/events", EventsController do
       resources "/comments", CommentController, only: [:create]
     end
-    resources "/groups", GroupsController
+    resources "/groups", GroupsController do
+      resources "/comments", GroupsCommentController, only: [:create]
+    end
     post "/groups/new", GroupsController, :add_group
-    resources "/places", PlacesController
+
+    resources "/places", PlacesController do
+      resources "/comments", PlacesCommentController, only: [:create]
+    end
     post "/places/new", PlacesController, :add_place
+
   end
 
   scope "/", VenueWeb do

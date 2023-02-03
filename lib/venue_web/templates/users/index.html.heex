@@ -5,6 +5,9 @@
 <%= user.email %>
 <% end %>
 
+<%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, signed: true) %>
+
+<%= # Date.diff(Date.utc_today(), user.birth) %>
 <%= user.birth %>
 <%= user.desc %>
 

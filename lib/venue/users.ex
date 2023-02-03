@@ -155,6 +155,14 @@ defmodule Venue.Users do
     |> User.validate_current_password(password)
     |> Ecto.Changeset.apply_action(:update)
   end
+  
+  def set_avatar(user, attrs) do
+    #%{"avatar" => avatar} = attrs
+
+    user
+    |> User.avatar_changeset(attrs)
+    |> Repo.update()
+  end
 
   def apply_user_settings(user, attrs) do
     %{"city" => city} = attrs
@@ -232,6 +240,10 @@ defmodule Venue.Users do
 
   def change_user_settings(user, attrs \\ %{}) do
     User.settings_changeset(user, attrs)
+  end
+
+  def change_user_avatar(user, attrs \\ %{}) do
+    User.avatar_changeset(user, attrs)
   end
 
   @doc """
