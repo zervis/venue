@@ -23,10 +23,10 @@
   <%= date_input f, :birth, required: true %>
   <%= error_tag f, :birth %>
 
-  <%= radio_button f, :sex, "true" %>
   <%= label f, :sex, "Male" %>
-  <%= radio_button f, :sex, "true" %>
+  <%= radio_button f, :sex, "m" %> 
   <%= label f, :sex, "Female" %>
+  <%= radio_button f, :sex, "f" %>
 
   <%= label f, :city %>
   <%= text_input f, :city, placeholder: "City name or postal code", required: true %>

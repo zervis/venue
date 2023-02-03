@@ -48,7 +48,7 @@ defmodule Venue.Avatar do
 
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(version, scope) do
-   "/images/avatars/default_#{version}.png"
+   "/uploads/default_#{version}.png"
   end
 
   # Specify custom headers for s3 objects
