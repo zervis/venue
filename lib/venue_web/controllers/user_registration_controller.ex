@@ -21,7 +21,7 @@ defmodule VenueWeb.UserRegistrationController do
 
         conn
         |> put_flash(:info, "User created successfully.")
-        |> UserAuth.log_in_user(user)
+        |> UserAuth.first_log_in_user(user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

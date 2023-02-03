@@ -7,6 +7,10 @@
     </div>
   <% end %>
 
+  <%= label f, :name %>
+  <%= text_input f, :name, required: true %>
+  <%= error_tag f, :name %>
+
   <%= label f, :email %>
   <%= email_input f, :email, required: true %>
   <%= error_tag f, :email %>
@@ -19,17 +23,9 @@
   <%= date_input f, :birth, required: true %>
   <%= error_tag f, :birth %>
 
-  <%= label f, :about %>
-  <%= textarea f, :desc, required: true %>
-  <%= error_tag f, :desc %>
-
   <%= label f, :city %>
   <%= text_input f, :city, placeholder: "City name or postal code", required: true %>
   <%= error_tag f, :city %>
-
-  <%= label f, :distance %>
-  <%= number_input f, :distance, placeholder: "25", required: true %>
-  <%= error_tag f, :distance %>
 
   <div>
     <%= submit "Register" %>

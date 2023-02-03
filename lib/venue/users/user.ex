@@ -9,6 +9,8 @@ defmodule Venue.Users.User do
     field :hashed_password, :string, redact: true
     field :city, :string
     field :desc, :string
+    field :sex, :string
+    field :name, :string
     field :avatar, Venue.Avatar.Type
     field :birth, :date
     field :lat, :float
@@ -39,7 +41,7 @@ defmodule Venue.Users.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :city, :birth, :desc, :distance])
+    |> cast(attrs, [:email, :password, :city, :birth, :sex, :name])
     |> validate_email()
     |> validate_password(opts)
   end

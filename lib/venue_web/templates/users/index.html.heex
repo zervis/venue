@@ -2,7 +2,7 @@
 <%= for user <- @users do %>
 
 <%= link to: Routes.users_path(@conn, :show, user.id) do %>
-<%= user.email %>
+<%= user.name %>
 <% end %>
 
 <%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, signed: true) %>
