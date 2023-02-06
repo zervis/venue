@@ -24,7 +24,7 @@ defmodule Venue.Users do
   end
 
     @doc """
-  defmodule load_relation(user) do
+  def load_relation(user) do
   preloads = [:relationships, :reverse_relationships]
   people = Repo.all from p in User, preload: preloads
 [
