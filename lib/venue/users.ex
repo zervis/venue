@@ -8,6 +8,7 @@ defmodule Venue.Users do
   alias Venue.Repo
 
   alias Venue.Users.{User, UserToken, UserNotifier}
+  alias Venue.Relationships.Relationship
 
   def list_users(conn) do
     if conn.assigns[:current_user] do
@@ -23,32 +24,19 @@ defmodule Venue.Users do
 
   end
 
-    @doc """
-  def load_relation(user) do
-  preloads = [:relationships, :reverse_relationships]
-  people = Repo.all from p in User, preload: preloads
-[
-  Venue.Users.User<
-    ...
-    relationships: [
-      Venue.Users.User<
-        id: ...,
-        ...
-      >
-    ]
-  >,
-  Venue.Users.User<
-    ...
-    reverse_relationships: [
-      Venue.Users.User<
-        id: ...,
-        ...
-      >
-    ]
-  >
-]
-end
-"""
+  def create_relation(user, current_user) do
+    %Relationship{:relation_id => user, :user_id => current_user.id}
+    |> Relationship.changeset()
+    |> Repo.insert()
+  end
+
+  def delete_relation(user, current_user) do
+   relation = from(p in Relationship, where: p.user_id == ^current_user.id and p.relation_id == ^user, select: p.id)
+
+   relation
+   |> Repo.delete_all()
+  end
+
 
  ## https://rokkincat.com/blog/2016-9-23-location-based-search-with-ecto-and-postgres/
 
@@ -103,7 +91,10 @@ end
 
   """
 
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+
+   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships])
+  end
 
   ## User registration
 

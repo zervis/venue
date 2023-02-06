@@ -3,6 +3,7 @@ defmodule VenueWeb.UsersController do
 
   alias Venue.Users
   alias VenueWeb.UserAuth
+  alias Venue.Relationships.Relationship
 
   def index(conn, _params) do
     users = Users.list_users(conn)
@@ -11,7 +12,8 @@ defmodule VenueWeb.UsersController do
 
   def show(conn, %{"id" => id}) do
     user = Users.get_user!(id)
-    render(conn, "show.html", user: user)
+    relation_changeset = Relationship.changeset(%Relationship{}, %{})
+    render(conn, "show.html", user: user, changeset: relation_changeset)
   end
 
   def delete(conn, _params) do

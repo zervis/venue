@@ -10,7 +10,7 @@ defmodule Venue.Events.Event do
     field :city, :string
     field :desc, :string
     belongs_to :user, Venue.Users.User
-    has_many(:comments, Comment)
+    has_many :comments, Comment
 
     timestamps()
   end

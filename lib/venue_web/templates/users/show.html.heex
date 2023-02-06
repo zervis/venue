@@ -4,3 +4,30 @@
 <h1>about: <%= @user.desc %></h1>
 <% days = Date.diff(Date.utc_today(), @user.birth) %>
 <%= trunc(days / 365) %> y/o
+
+following:
+ <%= for friend <- @user.relationships do %>
+    <tr>
+      <td><%= friend.email %></td>
+    </tr>
+<% end %>
+
+followers:
+
+ <%= for friend <- @user.reverse_relationships do %>
+    <tr>
+      <td><%= friend.email %></td>
+    </tr>
+<% end %>
+
+
+
+
+<%= # link "unfollow", to: Routes.users_relation_path(@conn, :delete, @user, @current_user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+
+
+<%= if Enum.any?(@user.reverse_relationships, & &1.id == @current_user.id) == true do %>
+<%= link "unfollow", to: Routes.users_relation_path(@conn, :delete, @user.id, @current_user), method: :delete %>
+<% else %>
+<%= link "follow", to: Routes.users_relation_path(@conn, :create, @user.id), method: :create %>
+<% end %>
