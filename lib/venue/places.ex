@@ -123,6 +123,7 @@ defmodule Venue.Places do
     %{"city" => city} = place_params
     %{"title" => title} = place_params
     %{"desc" => desc} = place_params
+    %{"avatar" => avatar} = place_params
 
 
     {:ok, coordinates } = Geocoder.call(city)
@@ -131,7 +132,7 @@ defmodule Venue.Places do
     geom = %Geo.Point{coordinates: {lat, long}}
 
     %Place{}
-      |> Place.changeset(%{city: city, geom: geom, title: title, desc: desc, user_id: current_user.id})
+      |> Place.changeset(%{city: city, geom: geom, title: title, desc: desc, avatar: avatar, user_id: current_user.id})
       |> Repo.insert()
   end
 

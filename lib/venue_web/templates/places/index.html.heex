@@ -5,6 +5,7 @@
 
 <%= link to: Routes.places_path(@conn, :show, place.id) do %>
 <%= place.title %>
+<%= img_tag Venue.Avatar.url({place.avatar, place}, :thumb, class: "rounded-t-lg", signed: true) %>
 <% end %>
 
 <%= place.desc %>
