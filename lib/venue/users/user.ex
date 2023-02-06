@@ -2,6 +2,8 @@ defmodule Venue.Users.User do
   use Ecto.Schema
   use Waffle.Ecto.Schema
   import Ecto.Changeset
+  alias Venue.Users.User
+  alias Venue.Relationships.Relationship
 
   schema "users" do
     field :email, :string
@@ -18,6 +20,17 @@ defmodule Venue.Users.User do
     field :distance, :integer, default: 25
     field :geom, Geo.PostGIS.Geometry
     field :confirmed_at, :naive_datetime
+
+    many_to_many :relationships,
+                 User,
+                 join_through: Relationship,
+                 join_keys: [user_id: :id, relation_id: :id]
+
+    many_to_many :reverse_relationships,
+                 User,
+                 join_through: Relationship,
+                 join_keys: [relation_id: :id, user_id: :id]
+
 
     timestamps()
   end
@@ -160,4 +173,5 @@ defmodule Venue.Users.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
 end

@@ -13,7 +13,7 @@ defmodule Venue.Users do
     if conn.assigns[:current_user] do
    c_user = conn.assigns.current_user
 
-   query = from(p in User, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at])
+   query = from(p in User, where: p.id != ^c_user.id, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at])
 
     query
     |> Repo.all()
@@ -23,6 +23,32 @@ defmodule Venue.Users do
 
   end
 
+    @doc """
+  defmodule load_relation(user) do
+  preloads = [:relationships, :reverse_relationships]
+  people = Repo.all from p in User, preload: preloads
+[
+  Venue.Users.User<
+    ...
+    relationships: [
+      Venue.Users.User<
+        id: ...,
+        ...
+      >
+    ]
+  >,
+  Venue.Users.User<
+    ...
+    reverse_relationships: [
+      Venue.Users.User<
+        id: ...,
+        ...
+      >
+    ]
+  >
+]
+end
+"""
 
  ## https://rokkincat.com/blog/2016-9-23-location-based-search-with-ecto-and-postgres/
 
@@ -155,7 +181,7 @@ defmodule Venue.Users do
     |> User.validate_current_password(password)
     |> Ecto.Changeset.apply_action(:update)
   end
-  
+
   def set_avatar(user, attrs) do
     #%{"avatar" => avatar} = attrs
 
@@ -410,8 +436,5 @@ defmodule Venue.Users do
     end
   end
 
-  
+
 end
-
-
-

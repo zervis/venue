@@ -27,7 +27,8 @@ config :venue, VenueWeb.Endpoint,
   secret_key_base: "CjYAH3Wq8gx3FiVo+k812M+VjCEaurnCKx9NalPLFkwQx/bVL7TIL1pjjbpa6R9i",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

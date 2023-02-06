@@ -24,7 +24,7 @@ defmodule Venue.Avatar do
   # Whitelist file extensions:
    def validate({file, _}) do
      file_extension = file.file_name |> Path.extname() |> String.downcase()
-  
+
      case Enum.member?(~w(.jpg .jpeg .gif .png), file_extension) do
        true -> :ok
        false -> {:error, "invalid file type"}
@@ -43,7 +43,7 @@ defmodule Venue.Avatar do
 
   # Override the storage directory:
    def storage_dir(version, {file, scope}) do
-     "uploads/user/avatars/#{scope.id}"
+     "/uploads/user/avatars/#{scope.id}"
    end
 
   # Provide a default URL if there hasn't been a file uploaded

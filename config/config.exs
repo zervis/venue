@@ -7,7 +7,7 @@
 # General application configuration
 import Config
 
-config :venue, Venue.Repo, 
+config :venue, Venue.Repo,
   adapter: Ecto.Adapters.Postgres,
   types: Venue.PostgresTypes
 
@@ -59,4 +59,15 @@ import_config "#{config_env()}.exs"
 config :geocoder, :worker,
   # OpenStreetMaps or OpenCageData are other supported providers
   provider: Geocoder.Providers.GoogleMaps,
-  key: ""
+  key: "AIzaSyBIBN9gf-d9KMajJgRuO39Wz-Z5T3-zGYo"
+
+config :waffle, storage: Waffle.Storage.Local
+
+config :tailwind, version: "3.2.4", default: [
+  args: ~w(
+    --config=tailwind.config.js
+    --input=css/app.css
+    --output=../priv/static/assets/app.css
+  ),
+  cd: Path.expand("../assets", __DIR__)
+]

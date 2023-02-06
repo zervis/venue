@@ -2,5 +2,5 @@
 <h1>title: <%= @user.name %></h1>
 <h1>city: <%= @user.city %></h1>
 <h1>about: <%= @user.desc %></h1>
-<h1>birth: <%= @user.birth %></h1>
-
+<% days = Date.diff(Date.utc_today(), @user.birth) %>
+<%= trunc(days / 365) %> y/o

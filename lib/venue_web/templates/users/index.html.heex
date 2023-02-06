@@ -1,17 +1,32 @@
 <%= if @current_user do %>
+<!--<div class="grid grid-cols-4 gap-4 mb-4">-->
 <%= for user <- @users do %>
 
-<%= link to: Routes.users_path(@conn, :show, user.id) do %>
-<%= user.name %>
-<% end %>
-
-<%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, signed: true) %>
-
+<div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-8">
+    <%= link to: Routes.users_path(@conn, :show, user.id) do %>
+    <%= img_tag Venue.Avatar.url({user.avatar, user}, :thumb, class: "rounded-t-lg", signed: true) %>
+        <img class="rounded-t-lg" src="" alt="" />
+    <% end %>
+    <div class="p-5">
+        <%= link to: Routes.users_path(@conn, :show, user.id) do %>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+<%= user.name %> </h5>
+<h6 class="mb-2 text-lg font-light tracking-tight text-gray-900 dark:text-gray-200">
 <% days = Date.diff(Date.utc_today(), user.birth) %>
-<%= trunc(days / 365) %> y/o
-<%= user.desc %>
+<%= trunc(days / 365) %>, <%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km away
+</h6>
 
-<%= trunc(Geocalc.distance_between(user.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
+        <% end %>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-100"><%= user.desc %></p>
+        <div class="flex flex-col items-center">
+        <div class="flex mt-4 space-x-3 md:mt-6">
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add friend</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700">Message</a>
+        </div>
+        </div>
+    </div>
+</div>
 
 <% end %>
+<!--</div>-->
 <% end %>
