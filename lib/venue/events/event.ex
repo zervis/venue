@@ -18,7 +18,7 @@ defmodule Venue.Events.Event do
   @doc false
   def changeset(event, attrs) do
     event
-    |> cast(attrs, [:title, :city, :date])
-    |> validate_required([:title, :city, :date])
+    |> cast(attrs, [:title, :desc, :geom, :user_id, :city, :date])
+    |> validate_required([:title, :desc, :geom, :user_id, :city, :date])
   end
 end

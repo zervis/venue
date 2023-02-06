@@ -51,7 +51,7 @@ defmodule Venue.Places do
     query = from(p in Place, where: p.id == ^id, select: p,
     preload: [:user, places_comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
   )
-  
+
   Repo.one!(query)
   end
   @doc """
@@ -130,7 +130,8 @@ defmodule Venue.Places do
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Place{:city => city, :geom => geom, :title => title, :desc => desc, :user_id => current_user.id}
+    %Place{}
+      |> Place.changeset(%{city: city, geom: geom, title: title, desc: desc, user_id: current_user.id})
       |> Repo.insert()
   end
 
@@ -142,7 +143,7 @@ defmodule Venue.Places do
     |> Comment.changeset(%{message: message, user_id: current_user.id})
     |> Repo.insert()
   end
-  
+
 
 
   @doc """
@@ -234,5 +235,3 @@ defmodule Venue.Places do
     Comment.changeset(comment, attrs)
   end
 end
-
-

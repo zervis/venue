@@ -7,13 +7,13 @@
 		<%= textarea f, :desc, class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
 
         <label class="block mb-2 mt-2 text-sm font-medium text-gray-900">date</label>
-		<%= date_input f, :date, class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
+		<%= date_input f, :date, value: Timex.today(), class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
 
         <label class="block mb-2 mt-2 text-sm font-medium text-gray-900">hour</label>
-		<%= time_input f, :hour, class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
+		<%= time_input f, :hour, value: "18:00", class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
 
         <label class="block mb-2 mt-2 text-sm font-medium text-gray-900">city</label>
-		<%= text_input f, :city, placeholder: @user.city, class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
+		<%= text_input f, :city, value: @user.city, class: "mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" %>
 
     </div>
 	<div class="form-group">

@@ -139,12 +139,13 @@ end
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Event{:city => city, :geom => geom, :title => title, :date => naive_date, :desc => desc, :user_id => current_user.id}
+    %Event{}
+      |> Event.changeset(%{city: city, geom: geom, title: title, desc: desc, date: naive_date, user_id: current_user.id})
       |> Repo.insert()
   end
 
 
- 
+
 
   @doc """
   Returns the list of comments.

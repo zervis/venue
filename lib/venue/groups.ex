@@ -133,6 +133,7 @@ end
     geom = %Geo.Point{coordinates: {lat, long}}
 
     %Group{:city => city, :geom => geom, :title => title, :desc => desc, :user_id => current_user.id}
+      |> Group.changeset(%{city: city, geom: geom, title: title, desc: desc, user_id: current_user.id})
       |> Repo.insert()
   end
 
@@ -145,7 +146,7 @@ end
     |> Comment.changeset(%{message: message, user_id: current_user.id})
     |> Repo.insert()
   end
-  
+
 
 
   @doc """
@@ -237,4 +238,3 @@ end
     Comment.changeset(comment, attrs)
   end
 end
-

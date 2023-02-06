@@ -16,7 +16,7 @@ defmodule Venue.Places.Place do
   @doc false
   def changeset(place, attrs) do
     place
-    |> cast(attrs, [:title, :city])
-    |> validate_required([:title, :city])
+    |> cast(attrs, [:title, :desc, :geom, :user_id, :city])
+    |> validate_required([:title, :desc, :user_id, :city])
   end
 end
