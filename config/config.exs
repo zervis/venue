@@ -59,7 +59,7 @@ import_config "#{config_env()}.exs"
 config :geocoder, :worker,
   # OpenStreetMaps or OpenCageData are other supported providers
   provider: Geocoder.Providers.GoogleMaps,
-  key: "AIzaSyBIBN9gf-d9KMajJgRuO39Wz-Z5T3-zGYo"
+  key: ""
 
 config :waffle, storage: Waffle.Storage.Local
 
