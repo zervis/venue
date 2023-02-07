@@ -93,7 +93,7 @@ defmodule Venue.Users do
 
   def get_user!(id) do
 
-   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships])
+   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships, :photos, :events, :groups])
   end
 
   ## User registration

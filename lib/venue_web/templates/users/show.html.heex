@@ -31,3 +31,29 @@ followers:
 <% else %>
 <%= link "follow", to: Routes.users_relation_path(@conn, :create, @user.id), method: :create %>
 <% end %>
+
+<br>
+events:
+
+ <%= for event <- @user.events do %>
+    <tr>
+      <td><%= event.id %></td>
+    </tr>
+<% end %>
+
+<br>
+groups:
+
+ <%= for group <- @user.groups do %>
+    <tr>
+      <td><%= group.id %></td>
+    </tr>
+<% end %>
+<br>
+photos:
+
+ <%= for photo <- @user.photos do %>
+    <tr>
+      <td><%= img_tag Venue.Photo.url({photo.avatar, photo}, :thumb, class: "rounded-t-lg", signed: true) %></td>
+    </tr>
+<% end %>

@@ -9,7 +9,7 @@ defmodule Venue.Places.Place do
     field :geom, Geo.PostGIS.Geometry
     field :city, :string
     field :desc, :string
-    field :avatar, Venue.Avatar.Type
+    field :avatar, Venue.Photo.Type
     belongs_to :user, Venue.Users.User
     has_many(:places_comments, Comment)
     timestamps()
@@ -18,8 +18,13 @@ defmodule Venue.Places.Place do
   @doc false
   def changeset(place, attrs) do
     place
-    |> cast(attrs, [:title, :desc, :geom, :user_id, :city, :avatar])
+    |> cast(attrs, [:title, :geom, :user_id, :city])
+    |> validate_required([:title, :user_id, :city])
+  end
+
+  def photo_changeset(place, attrs) do
+    place
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:title, :desc, :user_id, :city, :avatar])
+    |> validate_required([:avatar])
   end
 end

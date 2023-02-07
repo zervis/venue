@@ -3,6 +3,9 @@ defmodule Venue.Users.User do
   use Waffle.Ecto.Schema
   import Ecto.Changeset
   alias Venue.Users.User
+  alias Venue.Events.Event
+  alias Venue.Groups.Group
+  alias Venue.Places.Place
   alias Venue.Relationships.Relationship
 
   schema "users" do
@@ -20,6 +23,9 @@ defmodule Venue.Users.User do
     field :distance, :integer, default: 25
     field :geom, Geo.PostGIS.Geometry
     field :confirmed_at, :naive_datetime
+    has_many :events, Event
+    has_many :groups, Group
+    has_many :photos, Place
 
     many_to_many :relationships,
                  User,

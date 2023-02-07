@@ -122,7 +122,6 @@ defmodule Venue.Places do
   def add_place(current_user, place_params) do
     %{"city" => city} = place_params
     %{"title" => title} = place_params
-    %{"desc" => desc} = place_params
     %{"avatar" => avatar} = place_params
 
 
@@ -131,9 +130,22 @@ defmodule Venue.Places do
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
-    %Place{}
-      |> Place.changeset(%{city: city, geom: geom, title: title, desc: desc, avatar: avatar, user_id: current_user.id})
-      |> Repo.insert()
+    attrs = %{city: city, geom: geom, title: title, user_id: current_user.id}
+    attrs2 = %{avatar: avatar}
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:place, Place.changeset(%Place{}, attrs))
+    |> Ecto.Multi.update(:place_with_photo, &Place.photo_changeset(&1.place, attrs2))
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{place_with_photo: place}} -> {:ok, place}
+      {:error, _, changeset, _} -> {:error, changeset}
+    end
+
+   # %Place{}
+   #   |> Place.changeset(%{city: city, geom: geom, title: title, user_id: current_user.id})
+   #  |> Repo.insert()
+
   end
 
   def create_comment(%Place{} = place, current_user, attrs \\ %{}) do
