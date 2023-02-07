@@ -9,6 +9,7 @@ defmodule Venue.Groups do
 
   alias Venue.Groups.Group
   alias Venue.Groups.Comment
+  alias Venue.Groups.Join
 
   @doc """
   Returns the list of groups.
@@ -33,6 +34,19 @@ defmodule Venue.Groups do
 
   end
 
+  def join_group(group, current_user) do
+    %Join{:group_id => group, :user_id => current_user.id}
+    |> Join.changeset()
+    |> Repo.insert()
+  end
+
+  def quit_group(group, current_user) do
+    quit = from(p in Join, where: p.user_id == ^current_user.id and p.group_id == ^group, select: p.id)
+ 
+    quit
+    |> Repo.delete_all()
+   end
+
   @doc """
   Gets a single group.
 
@@ -49,7 +63,7 @@ defmodule Venue.Groups do
   """
   def get_group!(id) do
   query = from(p in Group, where: p.id == ^id, select: p,
-  preload: [:user, groups_comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
+  preload: [:users, :user, groups_comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
 )
 
 Repo.one!(query)

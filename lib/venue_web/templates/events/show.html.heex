@@ -1,5 +1,20 @@
 <h1>title: <%= @event.title %></h1>
 
+
+<%= if Enum.any?(@event.users, & &1.id == @current_user.id) == true do %>
+<%= link "quit", to: Routes.events_join_event_path(@conn, :delete, @event.id, @current_user), method: :delete %>
+<% else %>
+<%= link "join", to: Routes.events_join_event_path(@conn, :create, @event.id), method: :create %>
+<% end %>
+
+participate:
+
+ <%= for user <- @event.users do %>
+    <tr>
+      <td><%= user.email %></td>
+    </tr>
+<% end %>
+
 <h3>Add a Comment</h3>
 <%= form_for @comment_changeset, Routes.events_comment_path(@conn, :create, @event), fn form -> %>
 
@@ -28,6 +43,7 @@
     <% end %>
   </tbody>
 </table>
+
 
 <span><%= link "Edit", to: Routes.events_path(@conn, :edit, @event) %></span>
 <span><%= link "Back", to: Routes.events_path(@conn, :index) %></span>

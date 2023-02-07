@@ -23,8 +23,10 @@ defmodule Venue.Users.User do
     field :distance, :integer, default: 25
     field :geom, Geo.PostGIS.Geometry
     field :confirmed_at, :naive_datetime
-    has_many :events, Event
-    has_many :groups, Group
+    many_to_many :events, Event, join_through: "users_events"
+    many_to_many :groups, Group, join_through: "users_groups"
+    #has_many :events, Event
+    #has_many :groups, Group
     has_many :photos, Place
 
     many_to_many :relationships,

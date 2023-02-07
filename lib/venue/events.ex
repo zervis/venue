@@ -8,6 +8,7 @@ defmodule Venue.Events do
   alias Venue.Repo
 
   alias Venue.Events.Event
+  alias Venue.Events.Join
   alias Venue.Events.Comment
 
   @doc """
@@ -52,7 +53,7 @@ defmodule Venue.Events do
   def get_event!(id) do
 
     query = from(p in Event, where: p.id == ^id, select: p,
-      preload: [:user, comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
+      preload: [:user, :users, comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
     )
 
   Repo.one!(query)
@@ -93,6 +94,19 @@ end
     |> Event.changeset(attrs)
     |> Repo.update()
   end
+
+  def join_event(event, current_user) do
+    %Join{:event_id => event, :user_id => current_user.id}
+    |> Join.changeset()
+    |> Repo.insert()
+  end
+
+  def quit_event(event, current_user) do
+    quit = from(p in Join, where: p.user_id == ^current_user.id and p.event_id == ^event, select: p.id)
+ 
+    quit
+    |> Repo.delete_all()
+   end
 
   @doc """
   Deletes a event.

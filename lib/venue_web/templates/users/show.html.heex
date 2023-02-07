@@ -37,7 +37,7 @@ events:
 
  <%= for event <- @user.events do %>
     <tr>
-      <td><%= event.id %></td>
+      <td><%= event.title %></td>
     </tr>
 <% end %>
 
@@ -46,7 +46,7 @@ groups:
 
  <%= for group <- @user.groups do %>
     <tr>
-      <td><%= group.id %></td>
+      <td><%= group.title %></td>
     </tr>
 <% end %>
 <br>

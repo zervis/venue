@@ -1,6 +1,20 @@
 <h1>title: <%= @group.title %></h1>
 <h1>desc: <%= @group.desc %></h1>
 
+<%= if Enum.any?(@group.users, & &1.id == @current_user.id) == true do %>
+<%= link "quit", to: Routes.groups_join_group_path(@conn, :delete, @group.id, @current_user), method: :delete %>
+<% else %>
+<%= link "join", to: Routes.groups_join_group_path(@conn, :create, @group.id), method: :create %>
+<% end %>
+
+participate:
+
+ <%= for user <- @group.users do %>
+    <tr>
+      <td><%= user.email %></td>
+    </tr>
+<% end %>
+
 <h3>Add a Comment</h3>
 <%= form_for @comment_changeset, Routes.groups_groups_comment_path(@conn, :create, @group), fn form -> %>
 

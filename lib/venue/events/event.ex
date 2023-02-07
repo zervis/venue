@@ -11,6 +11,7 @@ defmodule Venue.Events.Event do
     field :desc, :string
     belongs_to :user, Venue.Users.User
     has_many :comments, Comment
+    many_to_many :users, Venue.Users.User, join_through: "users_events"
 
     timestamps()
   end

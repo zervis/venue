@@ -9,7 +9,8 @@ defmodule Venue.Groups.Group do
     field :city, :string
     field :desc, :string
     belongs_to :user, Venue.Users.User
-    has_many(:groups_comments, Comment)
+    has_many :groups_comments, Comment
+    many_to_many :users, Venue.Users.User, join_through: "users_groups"
     timestamps()
   end
 
