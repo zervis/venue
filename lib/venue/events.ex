@@ -19,6 +19,7 @@ defmodule Venue.Events do
       [%Event{}, ...]
 
   """
+
   def list_events(conn) do
     if conn.assigns[:current_user] do
    c_user = conn.assigns.current_user
