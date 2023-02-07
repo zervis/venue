@@ -14,7 +14,7 @@ defmodule Venue.Users do
     if conn.assigns[:current_user] do
    c_user = conn.assigns.current_user
 
-   query = from(p in User, where: p.id != ^c_user.id, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at])
+   query = from(p in User, where: p.id != ^c_user.id, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships)
 
     query
     |> Repo.all()

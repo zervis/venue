@@ -93,13 +93,13 @@
     <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">I have 3 models: User, Conversation, Messages.
 
         Users is a basic user type with e-mail, password, etc.
-        
+
         Messages have the content of the message and belong to a conversation.
-        
+
         Conversations keep track of both users involved in the conversation like so:
         belongs_to :sender, App.User
         belongs_to :recipient, App.User
-        
+
         I’m having a hard time figuring out how I can model this relationship for users. I’ve figured I can do 2 has_many relationships with the corresponding foreign keys of sender_id and recipient_id. I can then preload both associations; however, there must be a more efficient way to do it.</p>
     <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
         <a href="#" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">

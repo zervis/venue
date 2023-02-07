@@ -10,6 +10,7 @@
 
 <%= place.desc %>
 <%= trunc(Geocalc.distance_between(place.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
+by: <%= place.user.email %>
 
 <% end %>
 <% end %>

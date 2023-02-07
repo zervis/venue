@@ -1,6 +1,6 @@
 <h1>title: <%= @place.title %></h1>
 <%= img_tag Venue.Photo.url({@place.avatar, @place}, :thumb, class: "rounded-t-lg", signed: true) %>
-
+<h1>by: <%= @place.user.email %></h1>
 
 <h3>Add a Comment</h3>
 <%= form_for @comment_changeset, Routes.places_places_comment_path(@conn, :create, @place), fn form -> %>

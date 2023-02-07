@@ -29,7 +29,7 @@ defmodule VenueWeb.PlacesController do
     case Places.add_place(current_user, place_params) do
         {:ok, _place} ->
             conn
-            |> put_flash(:info, "Added place!")
+            |> put_flash(:info, "Photo added!")
             |> redirect(to: Routes.places_path(conn, :index))
         {:error, _error} ->
             conn

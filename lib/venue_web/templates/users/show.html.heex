@@ -21,9 +21,7 @@ followers:
 <% end %>
 
 
-
-
-<%= # link "unfollow", to: Routes.users_relation_path(@conn, :delete, @user, @current_user), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+<br>
 
 
 <%= if Enum.any?(@user.reverse_relationships, & &1.id == @current_user.id) == true do %>
