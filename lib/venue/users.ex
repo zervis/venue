@@ -24,6 +24,7 @@ defmodule Venue.Users do
 
   end
 
+
   def create_relation(user, current_user) do
     %Relationship{:relation_id => user, :user_id => current_user.id}
     |> Relationship.changeset()
@@ -36,6 +37,7 @@ defmodule Venue.Users do
    relation
    |> Repo.delete_all()
   end
+
 
 
  ## https://rokkincat.com/blog/2016-9-23-location-based-search-with-ecto-and-postgres/
@@ -56,6 +58,10 @@ defmodule Venue.Users do
   """
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
+  end
+
+  def get_user_by_name(name) when is_binary(name) do
+    Repo.get_by(User, name: name)
   end
 
   @doc """

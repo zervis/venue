@@ -25,8 +25,6 @@ defmodule Venue.Users.User do
     field :confirmed_at, :naive_datetime
     many_to_many :events, Event, join_through: "users_events"
     many_to_many :groups, Group, join_through: "users_groups"
-    #has_many :events, Event
-    #has_many :groups, Group
     has_many :photos, Place
 
     many_to_many :relationships,
@@ -64,6 +62,7 @@ defmodule Venue.Users.User do
     user
     |> cast(attrs, [:email, :password, :city, :birth, :sex, :name])
     |> validate_email()
+    |> validate_name()
     |> validate_password(opts)
   end
 
@@ -84,6 +83,14 @@ defmodule Venue.Users.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+
+  defp validate_name(changeset) do
+    changeset
+    |> validate_required([:name])
+    |> validate_length(:name, max: 20)
+    |> unsafe_validate_unique(:name, Venue.Repo)
+    |> unique_constraint(:name)
   end
 
   defp maybe_hash_password(changeset, opts) do
