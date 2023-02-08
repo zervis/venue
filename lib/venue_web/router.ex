@@ -98,6 +98,10 @@ defmodule VenueWeb.Router do
     end
     post "/places/new", PlacesController, :add_place
 
+    resources "/dating", DatingController do
+      resources "/relation", DatingController, only: [:create, :delete]
+    end
+
   end
 
   scope "/", VenueWeb do

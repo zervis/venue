@@ -1,3 +1,4 @@
+<%= @current_user.name %>
 <h1>Settings</h1>
 
 <%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :thumb, signed: true) %>
@@ -18,6 +19,9 @@
     <%= submit "Change avatar" %>
   </div>
 </.form>
+
+<br>
+TODO: show me people age between .. .., show me all, males, females
 
 <h3>Change settings</h3>
 
