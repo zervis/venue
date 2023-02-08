@@ -10,6 +10,7 @@ defmodule Venue.Groups do
   alias Venue.Groups.Group
   alias Venue.Groups.Comment
   alias Venue.Groups.Join
+  alias Venue.Feeds.Feed
 
   @doc """
   Returns the list of groups.
@@ -38,11 +39,16 @@ defmodule Venue.Groups do
     %Join{:group_id => group, :user_id => current_user.id}
     |> Join.changeset()
     |> Repo.insert()
+
+    g = get_group!(group)
+
+    %Feed{:user_id => current_user.id, :type => 6, :data => "#{group}", :data2 => g.title}
+    |> Repo.insert()
   end
 
   def quit_group(group, current_user) do
     quit = from(p in Join, where: p.user_id == ^current_user.id and p.group_id == ^group, select: p.id)
- 
+
     quit
     |> Repo.delete_all()
    end
@@ -158,6 +164,9 @@ end
     group
     |> Ecto.build_assoc(:groups_comments)
     |> Comment.changeset(%{message: message, user_id: current_user.id})
+    |> Repo.insert()
+
+    %Feed{:user_id => current_user.id, :type => 7, :data => "#{group.id}", :data2 => "#{group.title}"}
     |> Repo.insert()
   end
 

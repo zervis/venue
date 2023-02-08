@@ -1,122 +1,121 @@
 <%= if @current_user do %>
+<%= @current_user.name %>
+events:
+ <%= for event <- @c_user.events do %>
+    <tr>
+      <td><%= event.title %></td>
+    </tr>
+<% end %>
 
-<div class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-    <time class="text-lg font-semibold text-gray-900 dark:text-white">January 13th, 2022</time>
-    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-1.jpg" alt="Jese Leos image"/>
-                <div class="text-gray-600 dark:text-gray-400">
-                    <div class="text-base font-normal"><span class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span> post in <span class="font-medium text-gray-900 dark:text-white"> How to start with Flowbite library</span></div>
-                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
-                        Public
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie Green image"/>
-                <div>
-                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> react to <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span> comment</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path><path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path></svg>
-                        Private
-                    </span>
-                </div>
-            </a>
-        </li>
-    </ol>
-</div>
-<div class="p-5 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-    <time class="text-lg font-semibold text-gray-900 dark:text-white">January 12th, 2022</time>
-    <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-4.jpg" alt="Laura Romeros image"/>
-                <div class="text-gray-600 dark:text-gray-400">
-                    <div class="text-base font-normal"><span class="font-medium text-gray-900 dark:text-white">Laura Romeros</span> likes <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span> post in <span class="font-medium text-gray-900 dark:text-white"> How to start with Flowbite library</span></div>
-                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path><path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path></svg>
-                        Private
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-2.jpg" alt="Mike Willi image"/>
-                <div>
-                    <div class="text-base font-normal text-gray-600 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Mike Willi</span> react to <span class="font-medium text-gray-900 dark:text-white">Thomas Lean's</span> comment</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
-                        Public
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-5.jpg" alt="Jese Leos image"/>
-                <div class="text-gray-600 dark:text-gray-400">
-                    <div class="text-base font-normal"><span class="font-medium text-gray-900 dark:text-white">Jese Leos</span> likes <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span> post in <span class="font-medium text-gray-900 dark:text-white"> How to start with Flowbite library</span></div>
-                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path></svg>
-                        Public
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
-                <img class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie Green image"/>
-                <div class="text-gray-600 dark:text-gray-400">
-                    <div class="text-base font-normal"><span class="font-medium text-gray-900 dark:text-white">Bonnie Green</span> likes <span class="font-medium text-gray-900 dark:text-white">Bonnie Green's</span> post in <span class="font-medium text-gray-900 dark:text-white"> Top figma designs</span></div>
-                    <div class="text-sm font-normal">"I wanted to share a webinar zeroheight."</div>
-                    <span class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400">
-                        <svg aria-hidden="true" class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"></path><path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"></path></svg>
-                        Private
-                    </span>
-                </div>
-            </a>
-        </li>
-    </ol>
-</div>
+<br>
+
+groups:
+ <%= for group <- @c_user.groups do %>
+    <tr>
+      <td><%= group.title %></td>
+    </tr>
+<% end %>
+
+<br>
+
+following:
+ <%= for relation <- @c_user.relationships do %>
+    <tr>
+      <td><%= relation.name %></td>
+    </tr>
+<% end %>
+
+<br>
+
+<ol>
+<%= for activity <- @activities do %>
+
+
+<li class="mb-10 ml-4">
+<%= img_tag Venue.Avatar.url({activity.user.avatar, activity.user}, :smol, class: "rounded-t-lg", signed: true) %>
+<%= link to: "/users/#{activity.user.id}" do
+
+  activity.user.name
+end %>
+<%=
+type = activity.type
+case type do
+   type = 1 -> "is following "
+   type = 3 -> "joined event "
+   type = 4 -> "commented on event "
+   type = 6 -> "joined group "
+   type = 7 -> "commented on group "
+   type = 8 -> "added "
+   type = 9 -> "commented on "
+ end %>
+
+<%= if type == 1 and activity.data == @current_user.id do
+
+link to: "/users/#{activity.data}" do
+  "you"
+end
+end %>
+
+<%= if type == 1 and activity.data != @current_user.id do
+
+link to: "/users/#{activity.data}" do
+  "someone"
+end
+end %>
+
+<%= if type == 3 do
+
+link to: "/events/#{activity.data}" do
+  activity.data2
+end
+end %>
+
+<%= if type == 4 do
+
+link to: "/events/#{activity.data}" do
+  activity.data2
+end
+end %>
+
+<%= if type == 6 do
+
+link to: "/groups/#{activity.data}" do
+  activity.data2
+end
+end %>
+
+<%= if type == 7 do
+
+link to: "/groups/#{activity.data}" do
+  activity.data2
+end
+end %>
+
+<%= if type == 8 do
+
+link to: "/places/#{activity.data}" do
+  "photo"
+end
+end %>
+
+<%= if type == 9 do
+
+link to: "/places/#{activity.data}" do
+  "photo"
+end
+end %>
+
+<%= activity.inserted_at %>
+</li>
+
+<% end %>
+</ol>
+
 <% else %>
 
 <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-    <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">many to many</h5>
-    <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">I have 3 models: User, Conversation, Messages.
-
-        Users is a basic user type with e-mail, password, etc.
-
-        Messages have the content of the message and belong to a conversation.
-
-        Conversations keep track of both users involved in the conversation like so:
-        belongs_to :sender, App.User
-        belongs_to :recipient, App.User
-
-        I’m having a hard time figuring out how I can model this relationship for users. I’ve figured I can do 2 has_many relationships with the corresponding foreign keys of sender_id and recipient_id. I can then preload both associations; however, there must be a more efficient way to do it.</p>
-    <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-        <a href="#" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-            <svg class="mr-3 w-7 h-7" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="apple" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg>
-            <div class="text-left">
-                <div class="mb-1 text-xs">Download on the</div>
-                <div class="-mt-1 font-sans text-sm font-semibold">Mac App Store</div>
-            </div>
-        </a>
-        <a href="#" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
-            <svg class="mr-3 w-7 h-7" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google-play" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"></path></svg>
-            <div class="text-left">
-                <div class="mb-1 text-xs">Get in on</div>
-                <div class="-mt-1 font-sans text-sm font-semibold">Google Play</div>
-            </div>
-        </a>
-    </div>
+    <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">let's go</h5>
+    <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">meet new people</p>
 </div>
 
 <% end %>

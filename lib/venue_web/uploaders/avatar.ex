@@ -7,7 +7,7 @@ defmodule Venue.Avatar do
   # Include ecto support (requires package waffle_ecto installed):
   # use Waffle.Ecto.Definition
 
-  @versions [:original, :thumb]
+  @versions [:original, :thumb, :smol]
 
   # To add a thumbnail version:
   # @versions [:original, :thumb]
@@ -35,6 +35,10 @@ defmodule Venue.Avatar do
    def transform(:thumb, _) do
      {:convert, "-strip -thumbnail 512x512^ -gravity center -extent 512x512 -format png", :png}
    end
+
+   def transform(:smol, _) do
+    {:convert, "-strip -thumbnail 64x64^ -gravity center -extent 64x64 -format png", :png}
+  end
 
   # Override the persisted filenames:
    def filename(version, _) do

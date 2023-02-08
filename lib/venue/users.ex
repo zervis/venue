@@ -9,12 +9,16 @@ defmodule Venue.Users do
 
   alias Venue.Users.{User, UserToken, UserNotifier}
   alias Venue.Relationships.Relationship
+  alias Venue.Feeds.Feed
+  alias Venue.Users
 
   def list_users(conn) do
     if conn.assigns[:current_user] do
-   c_user = conn.assigns.current_user
+   c_user = Users.get_user!(conn.assigns.current_user.id)
+   current_user = conn.assigns.current_user
+   following = Enum.map(c_user.relationships, fn member -> member.id end)
 
-   query = from(p in User, where: p.id != ^c_user.id, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships)
+   query = from(p in User, where: p.id != ^current_user.id and p.id not in ^following and st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships)
 
     query
     |> Repo.all()
@@ -28,6 +32,9 @@ defmodule Venue.Users do
   def create_relation(user, current_user) do
     %Relationship{:relation_id => user, :user_id => current_user.id}
     |> Relationship.changeset()
+    |> Repo.insert()
+
+    %Feed{:user_id => current_user.id, :type => 1, :data => "#{user}"}
     |> Repo.insert()
   end
 

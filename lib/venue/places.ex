@@ -9,6 +9,7 @@ defmodule Venue.Places do
 
   alias Venue.Places.Place
   alias Venue.Places.Comment
+  alias Venue.Feeds.Feed
 
   @doc """
   Returns the list of places.
@@ -139,12 +140,12 @@ defmodule Venue.Places do
     |> Repo.transaction()
     |> case do
       {:ok, %{place_with_photo: place}} -> {:ok, place}
+      %Feed{:user_id => current_user.id, :type => 8, :data => "#{place.id}"}
+      |> Repo.insert()
       {:error, _, changeset, _} -> {:error, changeset}
-    end
 
-   # %Place{}
-   #   |> Place.changeset(%{city: city, geom: geom, title: title, user_id: current_user.id})
-   #  |> Repo.insert()
+
+    end
 
   end
 
@@ -155,6 +156,10 @@ defmodule Venue.Places do
     |> Ecto.build_assoc(:places_comments)
     |> Comment.changeset(%{message: message, user_id: current_user.id})
     |> Repo.insert()
+
+
+    %Feed{:user_id => current_user.id, :type => 9, :data => "#{place.id}"}
+      |> Repo.insert()
   end
 
 

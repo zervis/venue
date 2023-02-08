@@ -10,6 +10,7 @@ defmodule Venue.Events do
   alias Venue.Events.Event
   alias Venue.Events.Join
   alias Venue.Events.Comment
+  alias Venue.Feeds.Feed
 
   @doc """
   Returns the list of events.
@@ -99,11 +100,15 @@ end
     %Join{:event_id => event, :user_id => current_user.id}
     |> Join.changeset()
     |> Repo.insert()
+
+    e = get_event!(event)
+    %Feed{:user_id => current_user.id, :type => 3, :data => "#{event}", :data2 => e.title}
+    |> Repo.insert()
   end
 
   def quit_event(event, current_user) do
     quit = from(p in Join, where: p.user_id == ^current_user.id and p.event_id == ^event, select: p.id)
- 
+
     quit
     |> Repo.delete_all()
    end
@@ -157,6 +162,7 @@ end
     %Event{}
       |> Event.changeset(%{city: city, geom: geom, title: title, desc: desc, date: naive_date, user_id: current_user.id})
       |> Repo.insert()
+
   end
 
 
@@ -209,6 +215,9 @@ end
     event
     |> Ecto.build_assoc(:comments)
     |> Comment.changeset(%{message: message, user_id: current_user.id})
+    |> Repo.insert()
+
+    %Feed{:user_id => current_user.id, :type => 4, :data => "#{event.id}", :data2 => event.title}
     |> Repo.insert()
   end
 
