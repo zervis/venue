@@ -1,4 +1,5 @@
 <%= if @current_user do %>
+my name: 
 <%= @current_user.name %>
 events:
  <%= for event <- @c_user.events do %>
@@ -35,7 +36,7 @@ following:
 <%= img_tag Venue.Avatar.url({activity.user.avatar, activity.user}, :smol, class: "rounded-t-lg", signed: true) %>
 <%= link to: "/users/#{activity.user.id}" do
 
-  activity.user.name
+  activity.user.email
 end %>
 <%=
 type = activity.type

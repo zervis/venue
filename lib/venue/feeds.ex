@@ -14,7 +14,7 @@ defmodule Venue.Feeds do
     current_user = conn.assigns.current_user
     c_user = Users.get_user!(conn.assigns.current_user.id)
 
-   following = Enum.map(c_user.reverse_relationships, fn member -> member.id end)
+   following = Enum.map(c_user.relationships, fn member -> member.id end)
    query = from(p in Feed, where: p.user_id != ^current_user.id and p.user_id in ^following, order_by: [desc: :updated_at], preload: :user)
 
     query
