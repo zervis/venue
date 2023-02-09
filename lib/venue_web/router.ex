@@ -81,6 +81,7 @@ defmodule VenueWeb.Router do
 
     resources "/users", UsersController do
       resources "/relation", RelationController, only: [:create, :delete]
+      resources "/skip", SkipController, only: [:create, :delete]
     end
     post "/events/new", EventsController, :add_event
     resources "/events", EventsController do
@@ -97,10 +98,6 @@ defmodule VenueWeb.Router do
       resources "/comments", PlacesCommentController, only: [:create]
     end
     post "/places/new", PlacesController, :add_place
-
-    resources "/dating", DatingController do
-      resources "/relation", DatingController, only: [:create, :delete]
-    end
 
   end
 

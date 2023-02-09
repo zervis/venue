@@ -19,7 +19,20 @@ followers:
       <td><%= friend.email %></td>
     </tr>
 <% end %>
+<br>
 
+friends:
+ <%= for relation <- @user.relationships do %>
+    <tr>
+      <td>
+      <%=
+           reverse = Enum.map(@user.reverse_relationships, fn member -> member.id end)
+           if relation.id in reverse, do: relation.name
+
+           %>
+      </td>
+    </tr>
+<% end %>
 
 <br>
 

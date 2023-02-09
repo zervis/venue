@@ -7,6 +7,7 @@ defmodule Venue.Users.User do
   alias Venue.Groups.Group
   alias Venue.Places.Place
   alias Venue.Relationships.Relationship
+  alias Venue.Skip.Skipped
 
   schema "users" do
     field :email, :string
@@ -35,6 +36,16 @@ defmodule Venue.Users.User do
     many_to_many :reverse_relationships,
                  User,
                  join_through: Relationship,
+                 join_keys: [relation_id: :id, user_id: :id]
+
+    many_to_many :skipped,
+                 User,
+                 join_through: Skipped,
+                 join_keys: [user_id: :id, relation_id: :id]
+
+    many_to_many :reverse_skipped,
+                 User,
+                 join_through: Skipped,
                  join_keys: [relation_id: :id, user_id: :id]
 
 

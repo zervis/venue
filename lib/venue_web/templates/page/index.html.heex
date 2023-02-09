@@ -1,7 +1,7 @@
 <%= if @current_user do %>
 dodać ogłoszenia
 <br>
-my name: 
+my name:
 <%= @current_user.name %>
 events:
  <%= for event <- @c_user.events do %>
@@ -25,6 +25,28 @@ following:
  <%= for relation <- @c_user.relationships do %>
     <tr>
       <td><%= relation.name %></td>
+    </tr>
+<% end %>
+
+followers:
+ <%= for relation <- @c_user.reverse_relationships do %>
+    <tr>
+      <td><%= relation.name %></td>
+    </tr>
+<% end %>
+
+<br>
+
+friends:
+ <%= for relation <- @c_user.relationships do %>
+    <tr>
+      <td>
+      <%=
+           reverse = Enum.map(@c_user.reverse_relationships, fn member -> member.id end)
+           if relation.id in reverse, do: relation.name
+
+           %>
+      </td>
     </tr>
 <% end %>
 
@@ -52,17 +74,6 @@ case type do
    type = 8 -> "added "
    type = 9 -> "commented on "
  end %>
-
-<%= if type == 1 do
-
-link to: "/users/#{activity.relation_id}" do
-  if activity.relation.id == @current_user.id do 
-  "you"
-  else
-  activity.relation.email
-  end
-end
-end %>
 
 <%= if type == 2 do
 

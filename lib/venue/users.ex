@@ -9,6 +9,7 @@ defmodule Venue.Users do
 
   alias Venue.Users.{User, UserToken, UserNotifier}
   alias Venue.Relationships.Relationship
+  alias Venue.Skip.Skipped
   alias Venue.Feeds.Feed
   alias Venue.Users
 
@@ -17,8 +18,9 @@ defmodule Venue.Users do
    c_user = Users.get_user!(conn.assigns.current_user.id)
    current_user = conn.assigns.current_user
    following = Enum.map(c_user.relationships, fn member -> member.id end)
+   skipped = Enum.map(c_user.skipped, fn member -> member.id end)
 
-   query = from(p in User, where: p.id != ^current_user.id and p.id not in ^following and st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships)
+   query = from(p in User, where: p.id != ^current_user.id and p.id not in ^following and p.id not in ^skipped and st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships, limit: 10)
 
     query
     |> Repo.all()
@@ -33,15 +35,25 @@ defmodule Venue.Users do
     %Relationship{:relation_id => user, :user_id => current_user.id}
     |> Relationship.changeset()
     |> Repo.insert()
-
-    %Feed{:user_id => current_user.id, :type => 1, :relation_id => user}
-    |> Repo.insert()
   end
 
   def delete_relation(user, current_user) do
    relation = from(p in Relationship, where: p.user_id == ^current_user.id and p.relation_id == ^user, select: p.id)
 
    relation
+   |> Repo.delete_all()
+  end
+
+  def skip_user(user, current_user) do
+    %Skipped{:relation_id => user, :user_id => current_user.id}
+    |> Skipped.changeset()
+    |> Repo.insert()
+  end
+
+  def unskip_user(user, current_user) do
+   skipped = from(p in Skipped, where: p.user_id == ^current_user.id and p.relation_id == ^user, select: p.id)
+
+   skipped
    |> Repo.delete_all()
   end
 
@@ -106,7 +118,7 @@ defmodule Venue.Users do
 
   def get_user!(id) do
 
-   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships, :photos, :events, :groups])
+   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships, :skipped, :reverse_skipped, :photos, :events, :groups])
   end
 
   ## User registration
