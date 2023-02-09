@@ -28,10 +28,11 @@
           <div class="flex items-center ml-3">
           <%= if @current_user do %>
             <div>
+               <%= @current_user.email %>
               <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
                 <!--<img class="w-8 h-8 rounded-full" src="#{current_user.avatar}" alt="user photo">-->
-                <%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :smol, class: "rounded-t-lg", signed: true) %>
+                 <%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :smol, class: "rounded-t-lg", signed: true) %>
               </button>
             </div>
             <% end %>

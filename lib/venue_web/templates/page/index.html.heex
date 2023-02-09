@@ -1,4 +1,6 @@
 <%= if @current_user do %>
+dodać ogłoszenia
+<br>
 my name: 
 <%= @current_user.name %>
 events:
@@ -42,6 +44,7 @@ end %>
 type = activity.type
 case type do
    type = 1 -> "is following "
+   type = 2 -> "added new message "
    type = 3 -> "joined event "
    type = 4 -> "commented on event "
    type = 6 -> "joined group "
@@ -50,17 +53,21 @@ case type do
    type = 9 -> "commented on "
  end %>
 
-<%= if type == 1 and activity.data == @current_user.id do
+<%= if type == 1 do
 
-link to: "/users/#{activity.data}" do
+link to: "/users/#{activity.relation_id}" do
+  if activity.relation.id == @current_user.id do 
   "you"
+  else
+  activity.relation.email
+  end
 end
 end %>
 
-<%= if type == 1 and activity.data != @current_user.id do
+<%= if type == 2 do
 
-link to: "/users/#{activity.data}" do
-  "someone"
+link to: "/users/#{activity.user.id}" do
+  activity.message
 end
 end %>
 

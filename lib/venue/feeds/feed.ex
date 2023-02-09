@@ -7,6 +7,7 @@ defmodule Venue.Feeds.Feed do
 
   schema "feed" do
     belongs_to(:user, User)
+    belongs_to(:relation, User)
     field :type, :integer
     field :data, :string
     field :data2, :string

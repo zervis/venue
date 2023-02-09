@@ -34,7 +34,7 @@ defmodule Venue.Users do
     |> Relationship.changeset()
     |> Repo.insert()
 
-    %Feed{:user_id => current_user.id, :type => 1, :data => "#{user}"}
+    %Feed{:user_id => current_user.id, :type => 1, :relation_id => user}
     |> Repo.insert()
   end
 

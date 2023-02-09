@@ -15,6 +15,10 @@ participate:
     </tr>
 <% end %>
 
+<%= 
+following = Enum.map(@group.users, fn member -> member.id end)
+if @current_user.id in following do %>
+
 <h3>Add a Comment</h3>
 <%= form_for @comment_changeset, Routes.groups_groups_comment_path(@conn, :create, @group), fn form -> %>
 
@@ -43,3 +47,8 @@ participate:
     <% end %>
   </tbody>
 </table>
+
+
+<% else %>
+join group to post and see comments
+<% end %>

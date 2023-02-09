@@ -15,6 +15,10 @@ participate:
     </tr>
 <% end %>
 
+<%= 
+following = Enum.map(@event.users, fn member -> member.id end)
+if @current_user.id in following do %>
+
 <h3>Add a Comment</h3>
 <%= form_for @comment_changeset, Routes.events_comment_path(@conn, :create, @event), fn form -> %>
 
@@ -43,6 +47,10 @@ participate:
     <% end %>
   </tbody>
 </table>
+
+<% else %>
+join event to post and see comments
+<% end %>
 
 
 <span><%= link "Edit", to: Routes.events_path(@conn, :edit, @event) %></span>
