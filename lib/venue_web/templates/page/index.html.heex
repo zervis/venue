@@ -1,8 +1,9 @@
 <%= if @current_user do %>
-dodać ogłoszenia
+add event/photo/group
 <br>
 my name:
 <%= @current_user.name %>
+<%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :smol, class: "rounded-t-lg", signed: true) %>
 events:
  <%= for event <- @c_user.events do %>
     <tr>

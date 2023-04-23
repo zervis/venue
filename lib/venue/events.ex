@@ -27,7 +27,7 @@ defmodule Venue.Events do
    c_user = conn.assigns.current_user
    current_date = Timex.now()
 
-   query = from(p in Event, where: p.date > ^current_date, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [asc: :date])
+   query = from(p in Event, where: p.date > ^current_date, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [asc: :date], preload: :users)
 
     query
     |> Repo.all()

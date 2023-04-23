@@ -15,7 +15,14 @@
         <%= Timex.from_now(event.date) %></time>
         <h3 class="text-lg font-semibold text-gray-900"><%= event.title %></h3>
         <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"><%= event.desc %></p>
-        <%= trunc(Geocalc.distance_between(event.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km away
+
+        <%= trunc(Geocalc.distance_between(event.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km away<br/>
+        <%= Enum.count(event.users) %> going<br/>
+                 <%= for user <- event.users do %>
+    <tr>
+      <td><%= user.email %></td>
+    </tr>
+<% end %>
 <% end %>
 </li>
 
