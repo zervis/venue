@@ -11,6 +11,7 @@ defmodule Venue.Users do
   alias Venue.Relationships.Relationship
   alias Venue.Skip.Skipped
   alias Venue.Feeds.Feed
+  alias Venue.Events.Event
   alias Venue.Users
 
   def list_users(conn) do
@@ -20,7 +21,10 @@ defmodule Venue.Users do
    following = Enum.map(c_user.relationships, fn member -> member.id end)
    skipped = Enum.map(c_user.skipped, fn member -> member.id end)
 
-   query = from(p in User, where: p.id != ^current_user.id and p.id not in ^following and p.id not in ^skipped and st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships, limit: 10)
+   """
+   and p.id not in ^following and p.id not in ^skipped
+   """
+   query = from(p in User, where: p.id != ^current_user.id and st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :updated_at], preload: :reverse_relationships, limit: 10)
 
     query
     |> Repo.all()
@@ -118,7 +122,7 @@ defmodule Venue.Users do
 
   def get_user!(id) do
 
-   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships, :skipped, :reverse_skipped, :photos, :events, :groups])
+   Repo.get!(User, id) |> Repo.preload([:relationships, :reverse_relationships, :skipped, :reverse_skipped, :photos, :events, :groups] )
   end
 
   ## User registration

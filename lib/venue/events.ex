@@ -37,6 +37,7 @@ defmodule Venue.Events do
 
   end
 
+
   @doc """
   Gets a single event.
 

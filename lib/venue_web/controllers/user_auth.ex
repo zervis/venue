@@ -102,7 +102,10 @@ defmodule VenueWeb.UserAuth do
   def fetch_current_user(conn, _opts) do
     {user_token, conn} = ensure_user_token(conn)
     user = user_token && Users.get_user_by_session_token(user_token)
-    assign(conn, :current_user, user)
+    profile = user && Users.get_user!(user.id)
+    conn
+    |> assign(:current_user, user)
+    |> assign(:profile, profile)
   end
 
   defp ensure_user_token(conn) do

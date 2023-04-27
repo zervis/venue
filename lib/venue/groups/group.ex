@@ -8,6 +8,7 @@ defmodule Venue.Groups.Group do
     field :geom, Geo.PostGIS.Geometry
     field :city, :string
     field :desc, :string
+    field :popularity, :integer, default: 0
     belongs_to :user, Venue.Users.User
     has_many :groups_comments, Comment
     many_to_many :users, Venue.Users.User, join_through: "users_groups"
@@ -19,5 +20,10 @@ defmodule Venue.Groups.Group do
     group
     |> cast(attrs, [:title, :desc, :geom, :user_id, :city])
     |> validate_required([:title, :desc, :geom, :user_id, :city])
+  end
+
+  def popularity(group, attrs) do
+    group
+    |> cast(attrs, [:popularity])
   end
 end

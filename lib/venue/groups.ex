@@ -25,7 +25,7 @@ defmodule Venue.Groups do
     if conn.assigns[:current_user] do
    c_user = conn.assigns.current_user
 
-   query = from(p in Group, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [asc: :updated_at])
+   query = from(p in Group, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :popularity],  preload: :users)
 
     query
     |> Repo.all()
@@ -42,12 +42,22 @@ defmodule Venue.Groups do
 
     g = get_group!(group)
 
+    g
+    |> Ecto.Changeset.change(%{popularity: g.popularity + 1})
+    |> Repo.update!()
+
     %Feed{:user_id => current_user.id, :type => 6, :data => "#{group}", :data2 => g.title}
     |> Repo.insert()
   end
 
   def quit_group(group, current_user) do
     quit = from(p in Join, where: p.user_id == ^current_user.id and p.group_id == ^group, select: p.id)
+
+    g = get_group!(group)
+
+    g
+    |> Ecto.Changeset.change(%{popularity: g.popularity - 1})
+    |> Repo.update!()
 
     quit
     |> Repo.delete_all()
@@ -108,6 +118,12 @@ end
   def update_group(%Group{} = group, attrs) do
     group
     |> Group.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def touch_group(%Group{} = group) do
+    group
+    |> Group.changeset()
     |> Repo.update()
   end
 
