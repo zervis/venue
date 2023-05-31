@@ -99,6 +99,14 @@ defmodule VenueWeb.Router do
     end
     post "/places/new", PlacesController, :add_place
 
+    resources "/conversations", ConversationController do
+          resources "/messages", MessageController
+    end
+
+    resources "/annoucments", HelpController do
+      resources "/comments", HelpCommentController, only: [:create]
+    end
+
   end
 
   scope "/", VenueWeb do

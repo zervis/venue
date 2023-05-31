@@ -1,0 +1,25 @@
+<h1>Listing Messages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Body</th>
+      <th>Read</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for message <- @messages do %>
+    <tr>
+      <td><%= message.user_id %></td>
+      <td><%= message.body %></td>
+      <td><%= message.read %></td>
+
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Message", to: Routes.conversation_message_path(@conn, :new, @conversation) %></span>

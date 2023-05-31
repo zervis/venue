@@ -30,20 +30,19 @@ defmodule VenueWeb.JoinEventController do
     event = Events.get_event!(event_id)
     current_user = conn.assigns.current_user
     events = Events.list_events(conn)
+    my_events = Events.list_my_events(conn)
     # create our new comment and handle (success or failure)
     case Events.quit_event(event.id, current_user) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "Event leaved")
-        |> put_view(VenueWeb.PageView)   # as of Phoenix 1.5.1
-        |> render("index.html", events: events)
+        |> redirect(to: Routes.events_path(conn, :index))
 
       # TODO: return to form and show errors
       _ ->
         conn
         |> put_flash(:info, "Quited")
-        |> put_view(VenueWeb.EventsView)   # as of Phoenix 1.5.1
-        |> render("index.html", events: events)
+        |> redirect(to: Routes.events_path(conn, :index))
     end
   end
 

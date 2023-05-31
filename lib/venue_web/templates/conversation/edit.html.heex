@@ -1,0 +1,5 @@
+<h1>Edit Conversation</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.conversation_path(@conn, :update, @conversation)) %>
+
+<span><%= link "Back", to: Routes.conversation_path(@conn, :index) %></span>

@@ -1,0 +1,24 @@
+
+
+<span><%= link "New Conversation", to: Routes.conversation_path(@conn, :new) %></span>
+<br/>
+<h1>Listing Conversations</h1>
+
+<%= for conversation <- @conversations do %>
+
+      <%= if conversation.sender != @current_user do %>
+      <%= conversation.sender.name %>
+      <% else %>
+      <%= conversation.recipient.name %>
+      <% end %>
+      <%= # conversation.messages.body %>
+      <td>
+        <span><%= link "Show", to: Routes.conversation_path(@conn, :show, conversation) %></span>
+        <span><%= link "Edit", to: Routes.conversation_path(@conn, :edit, conversation) %></span>
+        <span><%= link "Delete", to: Routes.conversation_path(@conn, :delete, conversation), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+      <br/>
+<% end %>
+
+<h3>
+ <%= #ruby: link_to user.email, conversations_path(sender_id: current_user.id, recipient_id: user.id), method: "post"%></h3>

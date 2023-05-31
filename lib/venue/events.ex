@@ -11,6 +11,7 @@ defmodule Venue.Events do
   alias Venue.Events.Join
   alias Venue.Events.Comment
   alias Venue.Feeds.Feed
+  alias Venue.Users
 
   @doc """
   Returns the list of events.
@@ -22,12 +23,34 @@ defmodule Venue.Events do
 
   """
 
-  def list_events(conn) do
+  def list_my_events(conn) do
     if conn.assigns[:current_user] do
-   c_user = conn.assigns.current_user
+   c_user = Users.get_user!(conn.assigns.current_user.id)
+   current_user = conn.assigns.current_user
+   following = Enum.map(c_user.events, fn member -> member.id end)
+
    current_date = Timex.now()
 
-   query = from(p in Event, where: p.date > ^current_date, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [asc: :date], preload: :users)
+   query = from(p in Event, where: p.date > ^current_date, where: p.id in ^following, order_by: [asc: :date], preload: :users)
+
+    query
+    |> Repo.all()
+
+    else
+    end
+
+  end
+
+
+  def list_events(conn) do
+    if conn.assigns[:current_user] do
+   c_user = Users.get_user!(conn.assigns.current_user.id)
+   current_user = conn.assigns.current_user
+   following = Enum.map(c_user.events, fn member -> member.id end)
+
+   current_date = Timex.now()
+
+   query = from(p in Event, where: p.date > ^current_date, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000) and p.id not in ^following, order_by: [asc: :date], preload: :users)
 
     query
     |> Repo.all()

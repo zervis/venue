@@ -21,13 +21,25 @@
 
 
 <div class="bg-gray-100 rounded-xl text-gray-900">
-    <a href="" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+    <!--<a href="/messages" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Messages
+    </a>-->
+    <a href="/conversations" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
       Messages
     </a>
-    <a href="/" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+    <!--<a href="/" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
 
         Feed
+    </a>-->
+
+    <a href="/annoucments" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Annoucments
     </a>
+
+    <a href="/annoucments" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Goals
+    </a>
+
     <a href="/users" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
 
         People
@@ -40,11 +52,12 @@
 
         Groups
     </a>
-      <a href="/places" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium rounded-b-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+    <a href="/places" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium rounded-b-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
 
         Photos
     </a>
 </div>
+
 
          <% end %>
   </div>
@@ -53,64 +66,7 @@
   </div>
   <div class="w-1/4 p-4">
 
-  <%= if @current_user do %>
-<%= link to: Routes.users_path(@conn, :show, @current_user) do %>
-<%= img_tag Venue.Avatar.url({@current_user.avatar, @current_user}, :thumb, signed: true), class: "rounded-2xl" %>
-               <%= @current_user.name %>
-<% end %>
-<% end %>
-
 <%= if @current_user do %>
-<br/>
-following:
- <%= for relation <- @profile.relationships do %>
-    <tr>
-      <td><%= relation.name %></td>
-    </tr>
-<% end %>
-<br/>
-followers:
- <%= for relation <- @profile.reverse_relationships do %>
-    <tr>
-      <td><%= relation.name %></td>
-    </tr>
-<% end %>
-
-<br/>
-
-friends:
- <%= for relation <- @profile.relationships do %>
-    <tr>
-      <td>
-      <%=
-           reverse = Enum.map(@profile.reverse_relationships, fn member -> member.id end)
-           if relation.id in reverse, do: relation.name
-
-           %>
-      </td>
-    </tr>
-<% end %>
-
-<br/>
-
-<br/>
-moje wydarzenia
-
- <%= for event <- @profile.events do %>
-    <tr>
-    <%= if NaiveDateTime.compare(event.date, NaiveDateTime.utc_now()) == :gt do %>
-      <td><%= event.title %></td>
-      <% end %>
-    </tr>
-<% end %>
-
-<br/>
-moje grupy:<br/>
- <%= for group <- @profile.groups do %>
-    <tr>
-      <td><%= group.title %></td>
-    </tr>
-<% end %>
 
   <li><%= link "My profile", to: Routes.users_path(@conn, :show, @current_user.id) %></li>
   <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>

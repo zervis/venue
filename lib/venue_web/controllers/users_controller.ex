@@ -6,8 +6,9 @@ defmodule VenueWeb.UsersController do
   alias Venue.Relationships.Relationship
 
   def index(conn, _params) do
+    friends = Users.list_friends(conn)
     users = Users.list_users(conn)
-    render(conn, "index.html", users: users)
+    render(conn, "index.html", friends: friends, users: users)
   end
 
   def show(conn, %{"id" => id}) do

@@ -7,8 +7,9 @@ defmodule VenueWeb.GroupsController do
   alias Venue.Groups.Comment
 
   def index(conn, _params) do
+    my_groups = Groups.list_my_groups(conn)
     groups = Groups.list_groups(conn)
-    render(conn, "index.html", groups: groups)
+    render(conn, "index.html", my_groups: my_groups, groups: groups)
   end
 
   def new(conn, _params) do
@@ -27,10 +28,10 @@ defmodule VenueWeb.GroupsController do
     current_user = conn.assigns.current_user
 
     case Groups.add_group(current_user, group_params) do
-        {:ok, _group} ->
+        {:ok, group} ->
             conn
             |> put_flash(:info, "Added group!")
-            |> redirect(to: Routes.groups_path(conn, :index))
+            |> redirect(to: Routes.groups_path(conn, :show, group.id))
         {:error, _error} ->
             conn
             |> put_flash(:error, "oopsie")

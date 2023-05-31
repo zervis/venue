@@ -20,8 +20,7 @@ defmodule VenueWeb.JoinGroupController do
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_flash(:error, "Already joined")
-        |> put_view(VenueWeb.GroupsView)   # as of Phoenix 1.5.1
-        |> render("show.html", group: group, changeset: changeset)
+        |> redirect(to: Routes.groups_path(conn, :show, group))
     end
   end
 
@@ -30,20 +29,19 @@ defmodule VenueWeb.JoinGroupController do
     group = Groups.get_group!(group_id)
     current_user = conn.assigns.current_user
     groups = Groups.list_groups(conn)
+    my_groups = Groups.list_my_groups(conn)
     # create our new comment and handle (success or failure)
     case Groups.quit_group(group.id, current_user) do
       {:ok, _} ->
         conn
         |> put_flash(:info, "group leaved")
-        |> put_view(VenueWeb.PageView)   # as of Phoenix 1.5.1
-        |> render("index.html", groups: groups)
+        |> redirect(to: Routes.groups_path(conn, :index))
 
       # TODO: return to form and show errors
       _ ->
         conn
         |> put_flash(:info, "Quited")
-        |> put_view(VenueWeb.GroupsView)   # as of Phoenix 1.5.1
-        |> render("index.html", groups: groups)
+        |> redirect(to: Routes.groups_path(conn, :index))
     end
   end
 

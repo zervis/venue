@@ -11,6 +11,7 @@ defmodule Venue.Groups do
   alias Venue.Groups.Comment
   alias Venue.Groups.Join
   alias Venue.Feeds.Feed
+  alias Venue.Users
 
   @doc """
   Returns the list of groups.
@@ -21,11 +22,37 @@ defmodule Venue.Groups do
       [%Group{}, ...]
 
   """
+  def list_my_groups(conn) do
+    if conn.assigns[:current_user] do
+    c_user = Users.get_user!(conn.assigns.current_user.id)
+    current_user = conn.assigns.current_user
+    following = Enum.map(c_user.groups, fn member -> member.id end)
+
+    """
+    and p.id not in ^following and p.id not in ^skipped
+    """
+
+   query = from(p in Group, where: p.id in ^following, preload: :users)
+
+    query
+    |> Repo.all()
+
+    else
+    end
+
+  end
+
   def list_groups(conn) do
     if conn.assigns[:current_user] do
-   c_user = conn.assigns.current_user
+    c_user = Users.get_user!(conn.assigns.current_user.id)
+    current_user = conn.assigns.current_user
+    following = Enum.map(c_user.groups, fn member -> member.id end)
 
-   query = from(p in Group, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000), order_by: [desc: :popularity],  preload: :users)
+    """
+    and p.id not in ^following and p.id not in ^skipped
+    """
+
+   query = from(p in Group, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000) and p.id not in ^following, preload: :users)
 
     query
     |> Repo.all()
@@ -42,9 +69,9 @@ defmodule Venue.Groups do
 
     g = get_group!(group)
 
-    g
-    |> Ecto.Changeset.change(%{popularity: g.popularity + 1})
-    |> Repo.update!()
+    #g
+    #|> Ecto.Changeset.change(%{popularity: g.popularity + 1})
+    #|> Repo.update!()
 
     %Feed{:user_id => current_user.id, :type => 6, :data => "#{group}", :data2 => g.title}
     |> Repo.insert()
@@ -53,11 +80,11 @@ defmodule Venue.Groups do
   def quit_group(group, current_user) do
     quit = from(p in Join, where: p.user_id == ^current_user.id and p.group_id == ^group, select: p.id)
 
-    g = get_group!(group)
+    #g = get_group!(group)
 
-    g
-    |> Ecto.Changeset.change(%{popularity: g.popularity - 1})
-    |> Repo.update!()
+    #g
+    #|> Ecto.Changeset.change(%{popularity: g.popularity - 1})
+    #|> Repo.update!()
 
     quit
     |> Repo.delete_all()

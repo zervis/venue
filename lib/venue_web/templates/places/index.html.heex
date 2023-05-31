@@ -1,16 +1,25 @@
 <%= if @current_user do %>
-<%= link to: Routes.places_path(@conn, :new), class: "text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" do %>Add new photo<% end %>
-<br>
+<section class="text-gray-100 body-font">
+  <div class="container py-2">
+  <div class="mb-8">
+<%= link to: Routes.places_path(@conn, :new), class: "text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" do %>Add new photo<% end %>
+</div>
 <%= for place <- @places do %>
 
+
+
+<div class="max-w-xl bg-gray-100 border border-gray-200 rounded-2xl shadow mb-8">
 <%= link to: Routes.places_path(@conn, :show, place.id) do %>
-<%= place.title %>
-<%= img_tag Venue.Photo.url({place.avatar, place}, :thumb, class: "rounded-t-lg", signed: true) %>
-<% end %>
+    <%= img_tag Venue.Photo.url({place.avatar, place}, :thumb, signed: true), class: "rounded-t-2xl" %>
 
-<%= place.desc %>
-<%= trunc(Geocalc.distance_between(place.geom.coordinates, @current_user.geom.coordinates) / 1000) %> km <br>
-by: <%= place.user.email %>
+    <div class="p-5">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
+            <%= place.title %> </h5>
+</div>
+    <% end %>
+</div>
 
 <% end %>
+</div>
+</section>
 <% end %>

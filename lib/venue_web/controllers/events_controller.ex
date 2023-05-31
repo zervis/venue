@@ -7,8 +7,9 @@ defmodule VenueWeb.EventsController do
   alias Venue.Users
 
   def index(conn, _params) do
+    my_events = Events.list_my_events(conn)
     events = Events.list_events(conn)
-    render(conn, "index.html", events: events)
+    render(conn, "index.html", my_events: my_events, events: events)
   end
 
 
@@ -29,10 +30,10 @@ defmodule VenueWeb.EventsController do
     current_user = conn.assigns.current_user
 
     case Events.add_event(current_user, event_params) do
-        {:ok, _event} ->
+        {:ok, event} ->
             conn
             |> put_flash(:info, "Added event!")
-            |> redirect(to: Routes.events_path(conn, :index))
+            |> redirect(to: Routes.events_path(conn, :show, event.id))
         {:error, _error} ->
             conn
             |> put_flash(:error, "oopsie")

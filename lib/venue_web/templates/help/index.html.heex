@@ -1,0 +1,26 @@
+
+<span><%= link "New Help", to: Routes.help_path(@conn, :new) %></span>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for help <- @annoucments do %>
+    <tr>
+      <td><%= help.description %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.help_path(@conn, :show, help) %></span>
+        <span><%= link "Edit", to: Routes.help_path(@conn, :edit, help) %></span>
+        <span><%= link "Delete", to: Routes.help_path(@conn, :delete, help), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
