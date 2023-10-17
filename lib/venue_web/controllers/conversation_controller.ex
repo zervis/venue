@@ -13,8 +13,8 @@ defmodule VenueWeb.ConversationController do
 
   def new(conn, _params) do
     changeset = Messages.change_conversation(%Conversation{})
-    friends = Users.list_friends(conn)
-    render(conn, "new.html", changeset: changeset, friends: friends)
+    following = Users.list_following(conn)
+    render(conn, "new.html", changeset: changeset, following: following)
   end
 
   def create(conn, %{"conversation" => conversation_params}) do

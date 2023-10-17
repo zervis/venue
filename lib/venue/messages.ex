@@ -21,7 +21,7 @@ defmodule Venue.Messages do
   def list_conversations(conn) do
     user = conn.assigns.current_user.id
     query = from(p in Conversation, where: p.sender_id == ^user or p.recipient_id == ^user, order_by: [desc: p.updated_at], preload: [:sender, :recipient],
-    select: p, preload: [messages: ^from(a in Message, order_by: [desc: a.inserted_at], limit: 1)])
+    select: p, preload: [messages: ^from(a in Message, order_by: [desc: a.inserted_at], distinct: a.conversation_id)])
 
     query
     |> Repo.all()
@@ -44,7 +44,7 @@ defmodule Venue.Messages do
   def get_conversation!(id) do
 
   query = from(p in Conversation, where: p.id == ^id, select: p,
-  preload: [messages: ^from(a in Message, order_by: [desc: a.inserted_at], preload: [:user])]
+  preload: [messages: ^from(a in Message, where: a.conversation_id == ^id, order_by: [desc: a.inserted_at], preload: [:user])]
 )
 
 Repo.one!(query)

@@ -2,9 +2,9 @@
 
 <section class="text-gray-100 body-font">
   <div class="container py-2">
-    <div class="mb-8">
+  <!--  <div class="mb-8">
   <%= link to: Routes.events_path(@conn, :new), class: "text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" do %>Add new event<% end %>
-</div>
+</div>-->
 <%= for event <- @my_events do %>
     <%= link to: Routes.events_path(@conn, :show, event.id) do %>
 

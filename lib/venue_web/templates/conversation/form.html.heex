@@ -6,7 +6,9 @@
   <% end %>
 
   <%= label f, :recipient_id %>
-  <%= number_input f, :recipient_id %>
+  <%= select f, :recipient_id, 
+  (for friend <- @following do [key: friend.name, value: friend.id] end ) 
+  %>
   <%= error_tag f, :recipient_id %>
 
   <%= label f, :body %>
@@ -17,14 +19,3 @@
     <%= submit "Save" %>
   </div>
 </.form>
-
-
-
-
-<br/>
-<br/>
-list of friends:<br/>
-
-<%=# for friend <- @friends do %>
-<%= #friend.name %>
-<% # end %>

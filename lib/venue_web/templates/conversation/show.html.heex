@@ -14,7 +14,7 @@
 <% end %>
 
 <%= for m <- @conversation.messages do %>
-   <%= m.user_id %> <%= m.body %><br/>
+   <%= m.user.name %> <%= m.body %> <%= Timex.from_now(m.inserted_at) %><br/>
 <% end %>
 <% else %>
 not my convo
@@ -22,5 +22,5 @@ not my convo
 
 
 
-<span><%= link "Edit", to: Routes.conversation_path(@conn, :edit, @conversation) %></span> |
+<!--<span><%= link "Edit", to: Routes.conversation_path(@conn, :edit, @conversation) %></span> | -->
 <span><%= link "Back", to: Routes.conversation_path(@conn, :index) %></span>

@@ -1,8 +1,7 @@
 
-
-<span><%= link "New Conversation", to: Routes.conversation_path(@conn, :new) %></span>
-<br/>
-<h1>Listing Conversations</h1>
+    <div class="mb-8">
+  <%= link to: Routes.conversation_path(@conn, :new), class: "text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700" do %>Create new conversation<% end %>
+</div>
 
 <%= for conversation <- @conversations do %>
 
@@ -11,11 +10,16 @@
       <% else %>
       <%= conversation.recipient.name %>
       <% end %>
-      <%= # conversation.messages.body %>
+
+      <%= for m <- conversation.messages do %>
+      <%= m.body %> <%= Timex.from_now(m.inserted_at) %>
+      <% end %>
+
+       <%= # conversation.messages.body %>
       <td>
         <span><%= link "Show", to: Routes.conversation_path(@conn, :show, conversation) %></span>
-        <span><%= link "Edit", to: Routes.conversation_path(@conn, :edit, conversation) %></span>
-        <span><%= link "Delete", to: Routes.conversation_path(@conn, :delete, conversation), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <!--<span><%= link "Edit", to: Routes.conversation_path(@conn, :edit, conversation) %></span>
+        <span><%= link "Delete", to: Routes.conversation_path(@conn, :delete, conversation), method: :delete, data: [confirm: "Are you sure?"] %></span>-->
       </td>
       <br/>
 <% end %>
