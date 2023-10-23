@@ -7,19 +7,18 @@
 # General application configuration
 import Config
 
-config :venue, Venue.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  types: Venue.PostgresTypes
-
 config :venue,
   ecto_repos: [Venue.Repo]
 
 # Configures the endpoint
 config :venue, VenueWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: VenueWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: VenueWeb.ErrorHTML, json: VenueWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Venue.PubSub,
-  live_view: [signing_salt: "o9CDdJmI"]
+  live_view: [signing_salt: "Pfoapp2A"]
 
 # Configures the mailer
 #
@@ -30,17 +29,26 @@ config :venue, VenueWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :venue, Venue.Mailer, adapter: Swoosh.Adapters.Local
 
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
-
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.17.11",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.3.2",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configures Elixir's Logger
@@ -55,19 +63,9 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
 
-
 config :geocoder, :worker,
   # OpenStreetMaps or OpenCageData are other supported providers
   provider: Geocoder.Providers.GoogleMaps,
   key: ""
 
 config :waffle, storage: Waffle.Storage.Local
-
-config :tailwind, version: "3.2.4", default: [
-  args: ~w(
-    --config=tailwind.config.js
-    --input=css/app.css
-    --output=../priv/static/assets/app.css
-  ),
-  cd: Path.expand("../assets", __DIR__)
-]

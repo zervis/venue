@@ -8,12 +8,14 @@ defmodule Venue.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      Venue.Repo,
       # Start the Telemetry supervisor
       VenueWeb.Telemetry,
+      # Start the Ecto repository
+      Venue.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: Venue.PubSub},
+      # Start Finch
+      {Finch, name: Venue.Finch},
       # Start the Endpoint (http/https)
       VenueWeb.Endpoint
       # Start a worker by calling: Venue.Worker.start_link(arg)

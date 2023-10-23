@@ -7,7 +7,7 @@ defmodule VenueWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {VenueWeb.LayoutView, :root}
+    plug :put_root_layout, html: {VenueWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
@@ -20,7 +20,7 @@ defmodule VenueWeb.Router do
   scope "/", VenueWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", PageController, :home
   end
 
   # Other scopes may use custom stacks.
@@ -28,31 +28,19 @@ defmodule VenueWeb.Router do
   #   pipe_through :api
   # end
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
+  # Enable LiveDashboard and Swoosh mailbox preview in development
+  if Application.compile_env(:venue, :dev_routes) do
+    # If you want to use the LiveDashboard in production, you should put
+    # it behind authentication and allow only admins to access it.
+    # If your application does not have an admins-only section yet,
+    # you can use Plug.BasicAuth to set up some basic authentication
+    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: VenueWeb.Telemetry
-    end
-  end
-
-  # Enables the Swoosh mailbox preview in development.
-  #
-  # Note that preview only shows emails that were sent by the same
-  # node running the Phoenix server.
-  if Mix.env() == :dev do
     scope "/dev" do
       pipe_through :browser
 
+      live_dashboard "/dashboard", metrics: VenueWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
@@ -78,35 +66,6 @@ defmodule VenueWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-
-    resources "/users", UsersController do
-      resources "/relation", RelationController, only: [:create, :delete]
-      resources "/skip", SkipController, only: [:create, :delete]
-    end
-    post "/events/new", EventsController, :add_event
-    resources "/events", EventsController do
-      resources "/comments", CommentController, only: [:create]
-      resources "/join", JoinEventController, only: [:create, :delete]
-    end
-    resources "/groups", GroupsController do
-      resources "/comments", GroupsCommentController, only: [:create]
-      resources "/join", JoinGroupController, only: [:create, :delete]
-    end
-    post "/groups/new", GroupsController, :add_group
-
-    resources "/places", PlacesController do
-      resources "/comments", PlacesCommentController, only: [:create]
-    end
-    post "/places/new", PlacesController, :add_place
-
-    resources "/conversations", ConversationController do
-          resources "/messages", MessageController
-    end
-
-    resources "/annoucments", HelpController do
-      resources "/comments", HelpCommentController, only: [:create]
-    end
-
   end
 
   scope "/", VenueWeb do

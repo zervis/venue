@@ -1,0 +1,86 @@
+<.flash_group flash={@flash} />
+<div :if={@current_user != nil}>
+  <ul
+    class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 space-y-2"
+    role="alert"
+  >
+    <li>
+      <span class="font-medium">1. </span>Following me - limit 5 events (from feed), then other events from people I follow.
+      Should be joined into one feed (currently two queries: list_activities & list_invite).
+    </li>
+    <li>
+      <span class="font-medium">2. </span>
+      Direct messaging doesn't work - when you click on "message" button on followed people you still have to choose it's user name to create message.
+    </li>
+    <li>
+      <span class="font-medium">3. </span> Email notifications (swoosh) for new messages.
+    </li>
+    <li>
+      <span class="font-medium">4. </span> Styling (tailwindcss).
+    </li>
+  </ul>
+
+  <ol>
+    <li :for={invite <- @invite} class="mb-10 ml-4">
+      <img {Venue.Avatar.url({invite.relation.avatar, invite.relation}, :smol, class: "rounded-t-lg", signed: true)} />
+
+      <.link href={~p"/users/#{invite.relation.id}"}><%= invite.relation.name %></.link>
+
+      <span :if={invite.type == 1}>is following you</span>
+      <%= Timex.from_now(invite.inserted_at) %>
+    </li>
+
+    <li :for={activity <- @activities} class="mb-10 ml-4">
+      <img {Venue.Avatar.url({activity.user.avatar, activity.user}, :smol, class: "rounded-t-lg", signed: true)} />
+
+      <.link href={~p"/users/#{activity.user.id}"}><%= activity.user.name %></.link>
+
+      <span :if={activity.type == 1}>is following you</span>
+      <span :if={activity.type == 2}>added new message </span>
+      <span :if={activity.type == 3}>joined event </span>
+      <span :if={activity.type == 4}>commented on event </span>
+      <span :if={activity.type == 6}>joined group </span>
+      <span :if={activity.type == 7}>commented on group </span>
+      <span :if={activity.type == 8}>added </span>
+      <span :if={activity.type == 9}>commented on </span>
+
+      <.link :if={activity.type == 2} href={~p"/users/#{activity.user.id}"}>
+        <%= activity.message %>
+      </.link>
+
+      <.link :if={activity.type == 3} href={~p"/events/#{activity.data}"}>
+        <%= activity.data2 %>
+      </.link>
+
+      <.link :if={activity.type == 4} href={~p"/events/#{activity.data}"}>
+        <%= activity.data2 %>
+      </.link>
+
+      <.link :if={activity.type == 6} href={~p"/groups/#{activity.data}"}>
+        <%= activity.data2 %>
+      </.link>
+
+      <.link :if={activity.type == 7} href={~p"/groups/#{activity.data}"}>
+        <%= activity.data2 %>
+      </.link>
+
+      <.link :if={activity.type == 8} href={~p"/places/#{activity.data}"}>
+        photo
+      </.link>
+
+      <.link :if={activity.type == 9} href={~p"/places/#{activity.data}"}>
+        photo
+      </.link>
+
+      <%= Timex.from_now(activity.inserted_at) %>
+    </li>
+  </ol>
+</div>
+
+<div
+  :if={@current_user == nil}
+  class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+>
+  <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">let's go</h5>
+  <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">meet new people</p>
+</div>

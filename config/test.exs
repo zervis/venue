@@ -20,14 +20,17 @@ config :venue, Venue.Repo,
 # you can enable the server option below.
 config :venue, VenueWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "V11/i6f4BJbsjuy4B00vIeZtVUt+qOEmL0fh1Maj/ANHIoXiLcaRX/Ra6UU947xX",
+  secret_key_base: "E0vgO0NtY/oBiWWTSB8km3WEx9I6CW6g8t/IZKvTduE7T5RW4J0TZ6g6FVTeUBNZ",
   server: false
 
 # In test we don't send emails.
 config :venue, Venue.Mailer, adapter: Swoosh.Adapters.Test
 
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

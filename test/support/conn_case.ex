@@ -19,15 +19,15 @@ defmodule VenueWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint VenueWeb.Endpoint
+
+      use VenueWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import VenueWeb.ConnCase
-
-      alias VenueWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint VenueWeb.Endpoint
     end
   end
 
@@ -45,7 +45,7 @@ defmodule VenueWeb.ConnCase do
   test context.
   """
   def register_and_log_in_user(%{conn: conn}) do
-    user = Venue.UsersFixtures.user_fixture()
+    user = Venue.AccountsFixtures.user_fixture()
     %{conn: log_in_user(conn, user), user: user}
   end
 
@@ -55,7 +55,7 @@ defmodule VenueWeb.ConnCase do
   It returns an updated `conn`.
   """
   def log_in_user(conn, user) do
-    token = Venue.Users.generate_user_session_token(user)
+    token = Venue.Accounts.generate_user_session_token(user)
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})

@@ -1,63 +1,25 @@
 defmodule VenueWeb.UserSettingsController do
   use VenueWeb, :controller
 
-  alias Venue.Users
+  alias Venue.Accounts
   alias VenueWeb.UserAuth
 
   plug :assign_email_and_password_changesets
 
   def edit(conn, _params) do
-    render(conn, "edit.html")
+    render(conn, :edit)
   end
-
-
-  def update(conn, %{"action" => "update_avatar"} = params) do
-    %{"user" => user_params} = params
-    user = conn.assigns.current_user
-    
-    case Users.set_avatar(user, user_params) do
-      {:ok, applied_user} ->
-        conn
-        |> put_flash(
-          :info,
-          "avatar updated."
-        )
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
-
-      {:error, changeset} ->
-        render(conn, "edit.html", avatar_changeset: changeset)
-    end
-  end
-
-  def update(conn, %{"action" => "update_settings"} = params) do
-    %{"user" => user_params} = params
-    user = conn.assigns.current_user
- 
-    case Users.apply_user_settings(user, user_params) do
-      {:ok, applied_user} ->
-        conn
-        |> put_flash(
-          :info,
-          "Settings updated."
-        )
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
-
-      {:error, changeset} ->
-        render(conn, "edit.html", settings_changeset: changeset)
-    end
-  end
-
 
   def update(conn, %{"action" => "update_email"} = params) do
     %{"current_password" => password, "user" => user_params} = params
     user = conn.assigns.current_user
 
-    case Users.apply_user_email(user, password, user_params) do
+    case Accounts.apply_user_email(user, password, user_params) do
       {:ok, applied_user} ->
-        Users.deliver_update_email_instructions(
+        Accounts.deliver_user_update_email_instructions(
           applied_user,
           user.email,
-          &Routes.user_settings_url(conn, :confirm_email, &1)
+          &url(~p"/users/settings/confirm_email/#{&1}")
         )
 
         conn
@@ -65,10 +27,10 @@ defmodule VenueWeb.UserSettingsController do
           :info,
           "A link to confirm your email change has been sent to the new address."
         )
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
+        |> redirect(to: ~p"/users/settings")
 
       {:error, changeset} ->
-        render(conn, "edit.html", email_changeset: changeset)
+        render(conn, :edit, email_changeset: changeset)
     end
   end
 
@@ -76,29 +38,29 @@ defmodule VenueWeb.UserSettingsController do
     %{"current_password" => password, "user" => user_params} = params
     user = conn.assigns.current_user
 
-    case Users.update_user_password(user, password, user_params) do
+    case Accounts.update_user_password(user, password, user_params) do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Password updated successfully.")
-        |> put_session(:user_return_to, Routes.user_settings_path(conn, :edit))
+        |> put_session(:user_return_to, ~p"/users/settings")
         |> UserAuth.log_in_user(user)
 
       {:error, changeset} ->
-        render(conn, "edit.html", password_changeset: changeset)
+        render(conn, :edit, password_changeset: changeset)
     end
   end
 
   def confirm_email(conn, %{"token" => token}) do
-    case Users.update_user_email(conn.assigns.current_user, token) do
+    case Accounts.update_user_email(conn.assigns.current_user, token) do
       :ok ->
         conn
         |> put_flash(:info, "Email changed successfully.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
+        |> redirect(to: ~p"/users/settings")
 
       :error ->
         conn
         |> put_flash(:error, "Email change link is invalid or it has expired.")
-        |> redirect(to: Routes.user_settings_path(conn, :edit))
+        |> redirect(to: ~p"/users/settings")
     end
   end
 
@@ -106,9 +68,7 @@ defmodule VenueWeb.UserSettingsController do
     user = conn.assigns.current_user
 
     conn
-    |> assign(:avatar_changeset, Users.change_user_avatar(user))
-    |> assign(:settings_changeset, Users.change_user_settings(user))
-    |> assign(:email_changeset, Users.change_user_email(user))
-    |> assign(:password_changeset, Users.change_user_password(user))
+    |> assign(:email_changeset, Accounts.change_user_email(user))
+    |> assign(:password_changeset, Accounts.change_user_password(user))
   end
 end

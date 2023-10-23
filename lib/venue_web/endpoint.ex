@@ -7,7 +7,8 @@ defmodule VenueWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_venue_key",
-    signing_salt: "G5FTIcyR"
+    signing_salt: "sAVxCiIp",
+    same_site: "Lax"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -20,9 +21,7 @@ defmodule VenueWeb.Endpoint do
     at: "/",
     from: :venue,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
-  
-  plug Plug.Static, at: "/uploads", from: Path.expand('./uploads'), gzip: false
+    only: VenueWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

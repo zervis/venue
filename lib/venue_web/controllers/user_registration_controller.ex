@@ -1,30 +1,30 @@
 defmodule VenueWeb.UserRegistrationController do
   use VenueWeb, :controller
 
-  alias Venue.Users
-  alias Venue.Users.User
+  alias Venue.Accounts
+  alias Venue.Accounts.User
   alias VenueWeb.UserAuth
 
   def new(conn, _params) do
-    changeset = Users.change_user_registration(%User{})
-    render(conn, "new.html", changeset: changeset)
+    changeset = Accounts.change_user_registration(%User{})
+    render(conn, :new, changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
-    case Users.register_user(user_params) do
+    case Accounts.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
-          Users.deliver_user_confirmation_instructions(
+          Accounts.deliver_user_confirmation_instructions(
             user,
-            &Routes.user_confirmation_url(conn, :edit, &1)
+            &url(~p"/users/confirm/#{&1}")
           )
 
         conn
         |> put_flash(:info, "User created successfully.")
-        |> UserAuth.first_log_in_user(user)
+        |> UserAuth.log_in_user(user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, :new, changeset: changeset)
     end
   end
 end
