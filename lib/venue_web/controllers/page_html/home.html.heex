@@ -1,5 +1,13 @@
 <.flash_group flash={@flash} />
-<div :if={@current_user != nil}>
+<div
+  :if={@current_user == nil}
+  class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+>
+  <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">let's go</h5>
+  <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">meet new people</p>
+</div>
+
+<div :if={@current_user}>
   <ul
     class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 space-y-2"
     role="alert"
@@ -77,10 +85,4 @@
   </ol>
 </div>
 
-<div
-  :if={@current_user == nil}
-  class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
->
-  <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">let's go</h5>
-  <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">meet new people</p>
-</div>
+
