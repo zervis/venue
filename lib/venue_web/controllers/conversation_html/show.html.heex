@@ -1,0 +1,13 @@
+<.header>
+  Conversation <%= @conversation.id %>
+  <:subtitle>This is a conversation record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/conversations/#{@conversation}/edit"}>
+      <.button>Edit conversation</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list></.list>
+
+<.back navigate={~p"/conversations"}>Back to converations</.back>

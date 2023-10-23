@@ -12,7 +12,79 @@ defmodule Venue.Accounts do
   alias Venue.Skip.Skipped
   alias Venue.Feeds.Feed
   alias Venue.Events.Event
-  alias Venue.Users
+
+  def list_users(conn) do
+    if conn.assigns[:current_user] do
+      c_user = get_user!(conn.assigns.current_user.id)
+      current_user = conn.assigns.current_user
+      following = Enum.map(c_user.relationships, fn member -> member.id end)
+      skipped = Enum.map(c_user.skipped, fn member -> member.id end)
+
+      """
+      and p.id not in ^following and p.id not in ^skipped
+      """
+
+      query =
+        from(p in User,
+          where:
+            p.id != ^current_user.id and
+              st_distance_in_meters(p.geom, ^c_user.geom) < ^c_user.distance * 1000,
+          order_by: [desc: :updated_at],
+          preload: :reverse_relationships,
+          limit: 10
+        )
+
+      query
+      |> Repo.all()
+    else
+    end
+  end
+
+  def list_following(conn) do
+    if conn.assigns[:current_user] do
+      c_user = get_user!(conn.assigns.current_user.id)
+      current_user = conn.assigns.current_user
+      following = Enum.map(c_user.relationships, fn member -> member.id end)
+
+      """
+      and p.id not in ^following and p.id not in ^skipped
+      """
+
+      query =
+        from(p in User,
+          where: p.id != ^current_user.id and p.id in ^following,
+          order_by: [desc: :updated_at]
+        )
+
+      query
+      |> Repo.all()
+    else
+    end
+  end
+
+  def list_friends(conn) do
+    if conn.assigns[:current_user] do
+      c_user = get_user!(conn.assigns.current_user.id)
+      current_user = conn.assigns.current_user
+      following = Enum.map(c_user.relationships, fn member -> member.id end)
+      reverse = Enum.map(c_user.reverse_relationships, fn member -> member.id end)
+
+      """
+      and p.id not in ^following and p.id not in ^skipped
+      """
+
+      query =
+        from(p in User,
+          where: p.id != ^current_user.id and p.id in ^reverse and p.id in ^following,
+          order_by: [desc: :updated_at],
+          preload: :reverse_relationships
+        )
+
+      query
+      |> Repo.all()
+    else
+    end
+  end
 
   ## Database getters
 

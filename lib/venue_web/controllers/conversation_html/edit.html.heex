@@ -1,0 +1,8 @@
+<.header>
+  Edit Conversation <%= @conversation.id %>
+  <:subtitle>Use this form to manage conversation records in your database.</:subtitle>
+</.header>
+
+<.conversation_form changeset={@changeset} action={~p"/conversations/#{@conversation}"} />
+
+<.back navigate={~p"/conversations"}>Back to converations</.back>
