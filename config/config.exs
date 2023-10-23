@@ -7,6 +7,10 @@
 # General application configuration
 import Config
 
+config :venue, Venue.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  types: Venue.PostgresTypes
+
 config :venue,
   ecto_repos: [Venue.Repo]
 

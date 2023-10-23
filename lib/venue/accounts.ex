@@ -64,7 +64,18 @@ defmodule Venue.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    Repo.get!(User, id)
+    |> Repo.preload([
+      :relationships,
+      :reverse_relationships,
+      :skipped,
+      :reverse_skipped,
+      :photos,
+      :events,
+      :groups
+    ])
+  end
 
   ## User registration
 
@@ -81,13 +92,14 @@ defmodule Venue.Accounts do
 
   """
   def register_user(attrs) do
-    %{"city" => city} = attrs
-    {:ok, coordinates} = Geocoder.call(city)
-    lat = coordinates.lat
-    long = coordinates.lon
-    geom = %Geo.Point{coordinates: {lat, long}}
-
-    %User{:geom => geom, :lat => lat, :long => long}
+    # %{"city" => city} = attrs
+    # {:ok, coordinates} = Geocoder.call(city)
+    # lat = coordinates.lat
+    # long = coordinates.lon
+    # geom = %Geo.Point{coordinates: {lat, long}}
+    #
+    # %User{:geom => geom, :lat => lat, :long => long}
+    %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
   end

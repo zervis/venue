@@ -77,8 +77,9 @@ defmodule Venue.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :city, :birth, :sex, :name])
     |> validate_email(opts)
+    |> validate_name(opts)
     |> validate_password(opts)
   end
 
@@ -87,7 +88,16 @@ defmodule Venue.Accounts.User do
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> validate_length(:email, max: 160)
+    |> unsafe_validate_unique(:email, Venue.Repo)
     |> maybe_validate_unique_email(opts)
+  end
+
+  defp validate_name(changeset, opts) do
+    changeset
+    |> validate_required([:name])
+    |> validate_length(:name, max: 20)
+    |> unsafe_validate_unique(:name, Venue.Repo)
+    |> unique_constraint(:name)
   end
 
   defp validate_password(changeset, opts) do
@@ -141,6 +151,18 @@ defmodule Venue.Accounts.User do
       %{changes: %{email: _}} = changeset -> changeset
       %{} = changeset -> add_error(changeset, :email, "did not change")
     end
+  end
+
+  def settings_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:city, :desc, :distance, :geom, :lat, :long])
+    |> validate_required([:city, :desc, :distance, :geom])
+  end
+
+  def avatar_changeset(user, attrs) do
+    user
+    |> cast_attachments(attrs, [:avatar])
+    |> validate_required([:avatar])
   end
 
   @doc """
