@@ -15,12 +15,63 @@
     <VenueWeb.LayoutComponent.nav current_user={@current_user} />
 
     <div class="container max-w-screen-lg mx-auto">
-      <div class="p-8 flex justify-center">
+      <div class="py-8 flex justify-center gap-8">
+        <div :if={@current_user} class="w-1/4">
+          <div class="bg-gray-100 rounded-xl text-gray-900">
+            <!--<a href="/messages" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Messages
+    </a>-->
+   
+       <!--
+        <a href="/conversations" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Messages
+    </a>
+    <a href="/" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+
+        Feed
+    </a>
+
+
+
+    <a href="/annoucments" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Annoucments
+    </a>
+
+    <a href="/annoucments" class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+      Goals
+    </a>-->
+            <.link
+              href="/users"
+              class="relative inline-flex items-center w-full px-4 py-2 text-normal rounded-t-xl font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+            >
+              People
+            </.link>
+            <.link
+              href="/events"
+              class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+            >
+              Events
+            </.link>
+            <.link
+              href="/groups"
+              class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+            >
+              Groups
+            </.link>
+            <.link
+              href="/places"
+              class="relative inline-flex items-center w-full px-4 py-2 text-normal font-medium rounded-b-xl hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700"
+            >
+              Photos
+            </.link>
+          </div>
+        </div>
+
         <div class="w-1/2">
           <%= @inner_content %>
         </div>
 
-        <div :if={@current_user} class="w-1/4 p-4">
+        <div :if={@current_user} class="w-1/4">
           <.link
             href=""
             class="relative inline-flex w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"

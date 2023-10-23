@@ -114,8 +114,8 @@ defmodule VenueWeb.LayoutComponent do
                 </div>
               </li>
             <% else %>
-              <li><.link href={~p"/users/register"}>Register</.link></li>
-              <li><.link href={~p"/users/log_in"}>Log in</.link></li>
+              <li><.link class="dark:text-white" href={~p"/users/register"}>Register</.link></li>
+              <li><.link class="dark:text-white" href={~p"/users/log_in"}>Log in</.link></li>
             <% end %>
           </ul>
         </div>
