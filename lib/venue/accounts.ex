@@ -4,9 +4,15 @@ defmodule Venue.Accounts do
   """
 
   import Ecto.Query, warn: false
+  import Geo.PostGIS
   alias Venue.Repo
 
   alias Venue.Accounts.{User, UserToken, UserNotifier}
+  alias Venue.Relationships.Relationship
+  alias Venue.Skip.Skipped
+  alias Venue.Feeds.Feed
+  alias Venue.Events.Event
+  alias Venue.Users
 
   ## Database getters
 
@@ -75,7 +81,13 @@ defmodule Venue.Accounts do
 
   """
   def register_user(attrs) do
-    %User{}
+    %{"city" => city} = attrs
+    {:ok, coordinates} = Geocoder.call(city)
+    lat = coordinates.lat
+    long = coordinates.lon
+    geom = %Geo.Point{coordinates: {lat, long}}
+
+    %User{:geom => geom, :lat => lat, :long => long}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
   end

@@ -1,12 +1,53 @@
 defmodule Venue.Accounts.User do
   use Ecto.Schema
+  use Waffle.Ecto.Schema
   import Ecto.Changeset
+
+  alias Venue.Accounts.User
+  alias Venue.Events.Event
+  alias Venue.Groups.Group
+  alias Venue.Places.Place
+  alias Venue.Relationships.Relationship
+  alias Venue.Skip.Skipped
 
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
+    field :city, :string
+    field :desc, :string
+    field :sex, :string
+    field :name, :string
+    field :avatar, Venue.Avatar.Type
+    field :birth, :date
+    field :lat, :float
+    field :long, :float
+    field :distance, :integer, default: 25
+    field :geom, Geo.PostGIS.Geometry
     field :confirmed_at, :naive_datetime
+    many_to_many :events, Event, join_through: "users_events"
+    many_to_many :groups, Group, join_through: "users_groups"
+    has_many :photos, Place
+
+    many_to_many :relationships,
+                 User,
+                 join_through: Relationship,
+                 join_keys: [user_id: :id, relation_id: :id]
+
+    many_to_many :reverse_relationships,
+                 User,
+                 join_through: Relationship,
+                 join_keys: [relation_id: :id, user_id: :id]
+
+    many_to_many :skipped,
+                 User,
+                 join_through: Skipped,
+                 join_keys: [user_id: :id, relation_id: :id]
+
+    many_to_many :reverse_skipped,
+                 User,
+                 join_through: Skipped,
+                 join_keys: [relation_id: :id, user_id: :id]
 
     timestamps()
   end
