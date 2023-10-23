@@ -8,6 +8,7 @@ defmodule VenueWeb.ConversationHTML do
   """
   attr :changeset, Ecto.Changeset, required: true
   attr :action, :string, required: true
+  attr :following, :map
 
   def conversation_form(assigns)
 end

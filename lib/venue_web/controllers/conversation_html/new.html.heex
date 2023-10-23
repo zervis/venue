@@ -3,6 +3,6 @@
   <:subtitle>Use this form to manage conversation records in your database.</:subtitle>
 </.header>
 
-<.conversation_form changeset={@changeset} action={~p"/conversations"} />
+<.conversation_form changeset={@changeset} action={~p"/conversations"} following={@following} />
 
 <.back navigate={~p"/conversations"}>Back to converations</.back>
