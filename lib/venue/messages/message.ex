@@ -1,14 +1,14 @@
 defmodule Venue.Messages.Message do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Venue.Users.User
+  alias Venue.Accounts.User
   alias Venue.Messages.Conversation
 
   schema "messages" do
     field :body, :string
     field :read, :boolean, default: false
-    #field :conversation, :id
-    #field :user, :id
+    # field :conversation, :id
+    # field :user, :id
     belongs_to :conversation, Conversation
     belongs_to :user, User
 
