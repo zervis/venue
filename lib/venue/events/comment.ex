@@ -3,7 +3,7 @@ defmodule Venue.Events.Comment do
   import Ecto.Changeset
 
   alias Venue.Events.Event
-  alias Venue.Users.User
+  alias Venue.Accounts.User
 
   @required_fields [:user_id, :event_id, :message]
 

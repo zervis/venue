@@ -1,15 +1,14 @@
 defmodule Venue.Events.Join do
-    use Ecto.Schema
-  
-    schema "users_events" do
-      field :user_id, :id
-      field :event_id, :id
-      timestamps()
-    end
-  
-  
+  use Ecto.Schema
+
+  schema "users_events" do
+    field :user_id, :id
+    field :event_id, :id
+    timestamps()
+  end
+
   @attrs [:user_id, :event_id]
-  
+
   def changeset(struct, params \\ %{}) do
     struct
     |> Ecto.Changeset.cast(params, @attrs)
@@ -23,4 +22,5 @@ defmodule Venue.Events.Join do
     struct
     |> Ecto.Changeset.cast(params, @attrs)
   end
-  end
+end
+

@@ -11,7 +11,7 @@ defmodule Venue.Events do
   alias Venue.Events.Join
   alias Venue.Events.Comment
   alias Venue.Feeds.Feed
-  alias Venue.Users
+  alias Venue.Accounts
 
   @doc """
   Returns the list of events.
@@ -25,41 +25,49 @@ defmodule Venue.Events do
 
   def list_my_events(conn) do
     if conn.assigns[:current_user] do
-   c_user = Users.get_user!(conn.assigns.current_user.id)
-   current_user = conn.assigns.current_user
-   following = Enum.map(c_user.events, fn member -> member.id end)
+      c_user = Accounts.get_user!(conn.assigns.current_user.id)
+      current_user = conn.assigns.current_user
+      following = Enum.map(c_user.events, fn member -> member.id end)
 
-   current_date = Timex.now()
+      current_date = Timex.now()
 
-   query = from(p in Event, where: p.date > ^current_date, where: p.id in ^following, order_by: [asc: :date], preload: :users)
+      query =
+        from(p in Event,
+          where: p.date > ^current_date,
+          where: p.id in ^following,
+          order_by: [asc: :date],
+          preload: :users
+        )
 
-    query
-    |> Repo.all()
-
+      query
+      |> Repo.all()
     else
     end
-
   end
-
 
   def list_events(conn) do
     if conn.assigns[:current_user] do
-   c_user = Users.get_user!(conn.assigns.current_user.id)
-   current_user = conn.assigns.current_user
-   following = Enum.map(c_user.events, fn member -> member.id end)
+      c_user = Accounts.get_user!(conn.assigns.current_user.id)
+      current_user = conn.assigns.current_user
+      following = Enum.map(c_user.events, fn member -> member.id end)
 
-   current_date = Timex.now()
+      current_date = Timex.now()
 
-   query = from(p in Event, where: p.date > ^current_date, where: st_distance_in_meters(p.geom, ^c_user.geom) < (^c_user.distance * 1000) and p.id not in ^following, order_by: [asc: :date], preload: :users)
+      query =
+        from(p in Event,
+          where: p.date > ^current_date,
+          where:
+            st_distance_in_meters(p.geom, ^c_user.geom) < ^c_user.distance * 1000 and
+              p.id not in ^following,
+          order_by: [asc: :date],
+          preload: :users
+        )
 
-    query
-    |> Repo.all()
-
+      query
+      |> Repo.all()
     else
     end
-
   end
-
 
   @doc """
   Gets a single event.
@@ -76,13 +84,19 @@ defmodule Venue.Events do
 
   """
   def get_event!(id) do
+    query =
+      from(p in Event,
+        where: p.id == ^id,
+        select: p,
+        preload: [
+          :user,
+          :users,
+          comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])
+        ]
+      )
 
-    query = from(p in Event, where: p.id == ^id, select: p,
-      preload: [:user, :users, comments: ^from(a in Comment, order_by: [desc: a.id], preload: [:user])]
-    )
-
-  Repo.one!(query)
-end
+    Repo.one!(query)
+  end
 
   @doc """
   Creates a event.
@@ -126,16 +140,18 @@ end
     |> Repo.insert()
 
     e = get_event!(event)
+
     %Feed{:user_id => current_user.id, :type => 3, :data => "#{event}", :data2 => e.title}
     |> Repo.insert()
   end
 
   def quit_event(event, current_user) do
-    quit = from(p in Join, where: p.user_id == ^current_user.id and p.event_id == ^event, select: p.id)
+    quit =
+      from(p in Join, where: p.user_id == ^current_user.id and p.event_id == ^event, select: p.id)
 
     quit
     |> Repo.delete_all()
-   end
+  end
 
   @doc """
   Deletes a event.
@@ -177,20 +193,22 @@ end
 
     {:ok, naive_date} = NaiveDateTime.from_iso8601(date_with_time)
 
-
-    {:ok, coordinates } = Geocoder.call(city)
+    {:ok, coordinates} = Geocoder.call(city)
     lat = coordinates.lat
     long = coordinates.lon
     geom = %Geo.Point{coordinates: {lat, long}}
 
     %Event{}
-      |> Event.changeset(%{city: city, geom: geom, title: title, desc: desc, date: naive_date, user_id: current_user.id})
-      |> Repo.insert()
-
+    |> Event.changeset(%{
+      city: city,
+      geom: geom,
+      title: title,
+      desc: desc,
+      date: naive_date,
+      user_id: current_user.id
+    })
+    |> Repo.insert()
   end
-
-
-
 
   @doc """
   Returns the list of comments.

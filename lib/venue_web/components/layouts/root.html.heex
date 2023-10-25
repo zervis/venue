@@ -72,11 +72,10 @@
         </div>
 
         <div :if={@current_user} class="w-1/4">
-          <.link
-            href=""
-            class="relative inline-flex w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-xl text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-          >
-            Create event
+          <.link href="/events/new">
+            <.button class="w-full text-left">
+              Create event
+            </.button>
           </.link>
 
           <.link

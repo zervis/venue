@@ -70,6 +70,13 @@ defmodule VenueWeb.Router do
     resources "/conversations", ConversationController do
       resources "/messages", MessageController
     end
+
+    post "/events/new", EventController, :create
+
+    resources "/events", EventController do
+      resources "/comments", CommentController, only: [:create]
+      resources "/join", JoinEventController, only: [:create, :delete]
+    end
   end
 
   scope "/", VenueWeb do

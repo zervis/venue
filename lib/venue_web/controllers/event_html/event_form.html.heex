@@ -1,0 +1,14 @@
+<.simple_form :let={f} for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+
+  <.input label="Title" field={f[:title]} />
+  <.input label="Description" field={f[:desc]} type="textarea" />
+  <.input label="Date" field={f[:date]} value={Timex.today()} type="date" />
+  <.input label="Hour" field={f[:hour]} value="18:00" type="time" />
+  <.input label="Location" field={f[:city]} value={@user.city} />
+  <:actions>
+    <.button>Save Event</.button>
+  </:actions>
+</.simple_form>
